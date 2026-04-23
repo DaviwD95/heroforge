@@ -1,10 +1,10 @@
-import 'dart:convert';
+
 
 import 'package:flutter/material.dart';
 
-import 'package:shared_preferences/shared_preferences.dart';
 
-import '../models/personaje.dart';
+
+import 'Personaje.dart';
 
 class DirectorioPersonajes with ChangeNotifier {
 
@@ -42,12 +42,7 @@ class DirectorioPersonajes with ChangeNotifier {
       ")",
     ].join("\n");
   }
-
-  DirectorioPersonajes copyWith({List<Personaje>? personajes}) {
-    return DirectorioPersonajes(
-      personajes ?? _personajes.map((p) => p.copyWith()).toList(),
-    );
-  }
+  
 
   List<Map<String, dynamic>> toJson() {
     return _personajes.map((p) => p.toJson()).toList();
@@ -58,6 +53,11 @@ class DirectorioPersonajes with ChangeNotifier {
       data.map((p) => Personaje.fromJson(p)).toList(),
     );
   }
+
+  void setPersonajes(List<Personaje> nuevos) {
+  _personajes = nuevos;
+  notifyListeners();
+}
 
   // FILTROS UTILES
   

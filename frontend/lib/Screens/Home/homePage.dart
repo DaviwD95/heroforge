@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:heroforge/Components/UserPop.dart';
+import 'package:heroforge/Config/AppConfig.dart';
 import 'package:heroforge/Screens/Listado/ListadoPersonajes.dart';
-import 'package:heroforge/ViewModels/personajes_view_model.dart';
+import 'package:heroforge/ViewModels/PersonajeViewModel.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -20,6 +22,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     viewModel = Provider.of<PersonajeViewModel>(context, listen: false);
+    viewModel.init(context);
   }
 
   @override
@@ -31,8 +34,19 @@ class _HomePageState extends State<HomePage> {
   ];
 
     return Scaffold(
+      backgroundColor: AppConfig.colorScaffold,
 
-      appBar: AppBar(title: Text("HeroForge")),  
+      appBar: AppBar(
+        backgroundColor: AppConfig.colorAppBar,
+        title: Text("HeroForge"),
+
+        actions: [
+
+          UserPop()
+
+        ],
+        
+        ),  
 
       bottomNavigationBar: BottomNavigationBar(
 

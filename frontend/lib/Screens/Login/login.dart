@@ -1,10 +1,15 @@
 
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:heroforge/Config/AppConfig.dart';
 import 'package:heroforge/Screens/Login/recuperaPassword.dart';
 import 'package:heroforge/Screens/Sign/signIn.dart';
 
 import 'package:heroforge/ViewModels/AuthViewModel.dart';
-import 'package:heroforge/homePage.dart';
+import 'package:heroforge/Screens/Home/homePage.dart';
+import 'package:heroforge/models/Auth/AuthProvider.dart';
+import 'package:heroforge/models/Auth/Usuario.dart';
+import 'package:provider/provider.dart';
 
 class Login extends StatefulWidget {
 
@@ -39,10 +44,10 @@ class _LoginsignState extends State<Login> {
     return SafeArea(
 
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: AppConfig.colorScaffold,
 
         appBar: AppBar(
-          backgroundColor: Colors.blueAccent,          
+          backgroundColor: AppConfig.colorAppBar,        
         ),
 
         body:  Padding(
@@ -72,7 +77,7 @@ class _LoginsignState extends State<Login> {
                       width: 300,
                       child: TextFormField(
                         controller: gmailController,
-                        validator: _validarCampoObligatorio,
+                        validator: _validarEmail,
           
                         decoration: InputDecoration(
                           labelText: "Gmail",
@@ -190,6 +195,19 @@ class _LoginsignState extends State<Login> {
     );
   }
 
+  
+  String? _validarEmail(String? value) {
+
+    if (value == null || value.trim().isEmpty) {
+      return "Este campo es obligatorio";
+    }
+
+    if (!EmailValidator.validate(value)) {
+      return "El email no es valido";
+    }
+    return null;
+  }
+
   String? _validarCampoObligatorio(String? value) {
     if (value == null || value.trim().isEmpty) {
       return "Este campo es obligatorio";
@@ -203,14 +221,21 @@ class _LoginsignState extends State<Login> {
       return;
     }
     
-    final results = await vm.loginBack(gmailController.text.trim(), passwordController.text.trim());
+    final result = await vm.loginBack(gmailController.text.trim(), passwordController.text.trim());
 
-    if(results != null)
+    if(result != null)
     {
-        String token = results["access_token"]; // lo guardo para mas adelante que seguro tendre que ir pasando
+       
 
-       // Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomePage()),);
-       Navigator.of(context).push(MaterialPageRoute(builder: (context) => Placeholder()),);
+
+        String token = result["access_token"]; 
+
+        final user = Usuario.fromJson(result["user"]);
+
+        
+        Provider.of<AuthProvider>(context, listen: false).login(token, user);
+
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomePage()),);
 
     }else
     {

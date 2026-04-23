@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:heroforge/Screens/Login/cambiarPassword.dart';
 import 'package:heroforge/Screens/Login/login.dart';
-import 'package:heroforge/homePage.dart';
+import 'package:heroforge/Screens/Home/homePage.dart';
+import 'package:heroforge/models/Auth/AuthProvider.dart';
 import 'package:heroforge/models/directorio_personajes.dart';
-import 'package:heroforge/ViewModels/personajes_view_model.dart';
+import 'package:heroforge/ViewModels/PersonajeViewModel.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -37,17 +38,23 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+
+        ChangeNotifierProvider(
+          create: (_) => AuthProvider(),
+       ), 
+
         ChangeNotifierProvider(
           
           create: (_) {
 
-            personajeViewModel = PersonajeViewModel(DirectorioPersonajes()); // lo inicializamos vacio
+            final vm = PersonajeViewModel(DirectorioPersonajes());
+           // vm.init(context); no puede recibir el context, por eso lo pondre desde el homepage 
 
-            
+            return vm;
+          },),
 
-          }
           
-        ),
+
       ],
 
       child: MaterialApp(

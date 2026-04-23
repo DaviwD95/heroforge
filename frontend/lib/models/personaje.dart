@@ -1,26 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:heroforge/models/PersonajeComplementos/Ataque.dart';
+import 'package:heroforge/models/PersonajeComplementos/Hechizo.dart';
+import 'package:heroforge/models/PersonajeComplementos/Item.dart';
 
-class Personaje extends ChangeNotifier{
+class Personaje extends ChangeNotifier {
 
+  //Datos basicos del personaje 
 
-  //ESTO ES PROVISIONAL, ESTOY PENSANDO EN COMO ORGANIZARME BIEN Y SI ME FALTAN O NO COSAS 
-  
-  // Identificadores
-  int? idPersonaje;
-  int? idUsuario;
-
-  // Datos básicos
+  int?    id;
+  int?    idUsuario;
   String? nombre;
   String? clase;
   String? raza;
   String? trasfondo;
   String? alineamiento;
+
   String? nombreJugador;
+  String? historia;
+  int     nivel;
+  int     experiencia;
+  bool    publicado;
+  DateTime? fechaCreacion;
 
-  int nivel;
-  int puntosExperiencia;
+  // Stats
 
-  // Stats principales
   int fuerza;
   int destreza;
   int constitucion;
@@ -29,33 +32,39 @@ class Personaje extends ChangeNotifier{
   int carisma;
 
   // Combate
-  int claseDeArmadura;
-  int puntosGolpeMaximos;
 
-  // JSON fields
-  Map<String, int> habilidades;  //Las secundarios es un json acuerdate pep
+  int claseArmadura;
+  int puntosGolpeMax;
 
-  List<Map<String, dynamic>> ataques;
-  List<Map<String, dynamic>> hechizos;
-  List<Map<String, dynamic>> inventario;
+  // Apariencia
+
+  int?    edad;
+  double? altura;
+  double? peso;
+  String? ojos;
+  String? pelo;
+  String? piel;
+  String? imagenUrl;
+
+  // Personalidad
 
   List<String> rasgos;
   List<String> ideales;
   List<String> vinculos;
   List<String> defectos;
 
-  // Físico
-  int? edad;
-  double? altura;
-  double? peso;
-  String? ojos;
-  String? pelo;
-  String? piel;
+  //Habilidades secundarias 
 
-  DateTime? fechaCreacion;
+  Map<String, int> habilidades;
+
+  // Listas (tablas separadas en backend) 
+
+  List<Ataque>  ataques;
+  List<Hechizo> hechizos;
+  List<Item>    inventario;
 
   Personaje({
-    this.idPersonaje,
+    this.id,
     this.idUsuario,
     this.nombre,
     this.clase,
@@ -63,246 +72,171 @@ class Personaje extends ChangeNotifier{
     this.trasfondo,
     this.alineamiento,
     this.nombreJugador,
-    this.nivel = 1,
-    this.puntosExperiencia = 0,
-    this.fuerza = 10,
-    this.destreza = 10,
+    this.historia,
+    this.nivel        = 1,
+    this.experiencia  = 0,
+    this.publicado    = false,
+    this.fechaCreacion,
+    this.fuerza       = 10,
+    this.destreza     = 10,
     this.constitucion = 10,
     this.inteligencia = 10,
-    this.sabiduria = 10,
-    this.carisma = 10,
-    this.claseDeArmadura = 10,
-    this.puntosGolpeMaximos = 10,
-    Map<String, int>? habilidades,
-    List<Map<String, dynamic>>? ataques,
-    List<Map<String, dynamic>>? hechizos,
-    List<Map<String, dynamic>>? inventario,
-    List<String>? rasgos,
-    List<String>? ideales,
-    List<String>? vinculos,
-    List<String>? defectos,
+    this.sabiduria    = 10,
+    this.carisma      = 10,
+    this.claseArmadura  = 10,
+    this.puntosGolpeMax = 10,
     this.edad,
     this.altura,
     this.peso,
     this.ojos,
     this.pelo,
     this.piel,
-    this.fechaCreacion,
-  })  : habilidades = habilidades ?? {},
-        ataques = ataques ?? [],
-        hechizos = hechizos ?? [],
-        inventario = inventario ?? [],
-        rasgos = rasgos ?? [],
-        ideales = ideales ?? [],
-        vinculos = vinculos ?? [],
-        defectos = defectos ?? [];
-
-  //  FROM JSON
-  factory Personaje.fromJson(Map<String, dynamic> data) {
-    return Personaje(
-      idPersonaje: data["idPersonaje"],
-      idUsuario: data["idUsuario"],
-      nombre: data["nombre"],
-      clase: data["clase"],
-      raza: data["raza"],
-      trasfondo: data["trasfondo"],
-      alineamiento: data["alineamiento"],
-      nombreJugador: data["nombreJugador"],
-      nivel: data["nivel"] ?? 1,
-      puntosExperiencia: data["puntosExperiencia"] ?? 0,
-      fuerza: data["fuerza"] ?? 10,
-      destreza: data["destreza"] ?? 10,
-      constitucion: data["constitucion"] ?? 10,
-      inteligencia: data["inteligencia"] ?? 10,
-      sabiduria: data["sabiduria"] ?? 10,
-      carisma: data["carisma"] ?? 10,
-      claseDeArmadura: data["claseDeArmadura"] ?? 10,
-      puntosGolpeMaximos: data["puntosGolpeMaximos"] ?? 10,
-      habilidades: Map<String, int>.from(data["habilidades"] ?? {}),
-
-      ataques: (data["ataques"] as List?)
-              ?.map((e) => Map<String, dynamic>.from(e))
-              .toList() ??
-          [],
-
-      hechizos: (data["hechizos"] as List?)
-              ?.map((e) => Map<String, dynamic>.from(e))
-              .toList() ??
-          [],
-
-      inventario: (data["inventario"] as List?)
-              ?.map((e) => Map<String, dynamic>.from(e))
-              .toList() ??
-          [],
-
-      rasgos: List<String>.from(data["rasgos"] ?? []),
-      ideales: List<String>.from(data["ideales"] ?? []),
-      vinculos: List<String>.from(data["vinculos"] ?? []),
-      defectos: List<String>.from(data["defectos"] ?? []),
-
-      edad: data["edad"],
-      altura: (data["altura"] as num?)?.toDouble(),
-      peso: (data["peso"] as num?)?.toDouble(),
-      ojos: data["ojos"],
-      pelo: data["pelo"],
-      piel: data["piel"],
-
-      fechaCreacion: data["fechaCreacion"] != null
-          ? DateTime.parse(data["fechaCreacion"])
-          : null,
-    );
-  }
-
-  //  TO JSON
-  Map<String, dynamic> toJson() {
-    return {
-      if (idPersonaje != null) "idPersonaje": idPersonaje,
-      "idUsuario": idUsuario,
-      "nombre": nombre,
-      "clase": clase,
-      "raza": raza,
-      "trasfondo": trasfondo,
-      "alineamiento": alineamiento,
-      "nombreJugador": nombreJugador,
-      "nivel": nivel,
-      "puntosExperiencia": puntosExperiencia,
-      "fuerza": fuerza,
-      "destreza": destreza,
-      "constitucion": constitucion,
-      "inteligencia": inteligencia,
-      "sabiduria": sabiduria,
-      "carisma": carisma,
-      "claseDeArmadura": claseDeArmadura,
-      "puntosGolpeMaximos": puntosGolpeMaximos,
-      "habilidades": habilidades,
-      "ataques": ataques,
-      "hechizos": hechizos,
-      "inventario": inventario,
-      "rasgos": rasgos,
-      "ideales": ideales,
-      "vinculos": vinculos,
-      "defectos": defectos,
-      "edad": edad,
-      "altura": altura,
-      "peso": peso,
-      "ojos": ojos,
-      "pelo": pelo,
-      "piel": piel,
-      "fechaCreacion": fechaCreacion?.toIso8601String(),
-    };
-  }
-
-  //  COPY WITH
-  Personaje copyWith({
-    int? idPersonaje,
-    int? idUsuario,
-    String? nombre,
-    String? clase,
-    String? raza,
-    String? trasfondo,
-    String? alineamiento,
-    String? nombreJugador,
-    int? nivel,
-    int? puntosExperiencia,
-    int? fuerza,
-    int? destreza,
-    int? constitucion,
-    int? inteligencia,
-    int? sabiduria,
-    int? carisma,
-    int? claseDeArmadura,
-    int? puntosGolpeMaximos,
-    Map<String, int>? habilidades,
-    List<Map<String, dynamic>>? ataques,
-    List<Map<String, dynamic>>? hechizos,
-    List<Map<String, dynamic>>? inventario,
+    this.imagenUrl,
     List<String>? rasgos,
     List<String>? ideales,
     List<String>? vinculos,
     List<String>? defectos,
-    int? edad,
-    double? altura,
-    double? peso,
-    String? ojos,
-    String? pelo,
-    String? piel,
-    DateTime? fechaCreacion,
-  }) {
-    return Personaje(
-      idPersonaje: idPersonaje ?? this.idPersonaje,
-      idUsuario: idUsuario ?? this.idUsuario,
-      nombre: nombre ?? this.nombre,
-      clase: clase ?? this.clase,
-      raza: raza ?? this.raza,
-      trasfondo: trasfondo ?? this.trasfondo,
-      alineamiento: alineamiento ?? this.alineamiento,
-      nombreJugador: nombreJugador ?? this.nombreJugador,
-      nivel: nivel ?? this.nivel,
-      puntosExperiencia: puntosExperiencia ?? this.puntosExperiencia,
-      fuerza: fuerza ?? this.fuerza,
-      destreza: destreza ?? this.destreza,
-      constitucion: constitucion ?? this.constitucion,
-      inteligencia: inteligencia ?? this.inteligencia,
-      sabiduria: sabiduria ?? this.sabiduria,
-      carisma: carisma ?? this.carisma,
-      claseDeArmadura: claseDeArmadura ?? this.claseDeArmadura,
-      puntosGolpeMaximos:
-          puntosGolpeMaximos ?? this.puntosGolpeMaximos,
-      habilidades: habilidades ?? Map.from(this.habilidades),
-      ataques: ataques ?? List.from(this.ataques),
-      hechizos: hechizos ?? List.from(this.hechizos),
-      inventario: inventario ?? List.from(this.inventario),
-      rasgos: rasgos ?? List.from(this.rasgos),
-      ideales: ideales ?? List.from(this.ideales),
-      vinculos: vinculos ?? List.from(this.vinculos),
-      defectos: defectos ?? List.from(this.defectos),
-      edad: edad ?? this.edad,
-      altura: altura ?? this.altura,
-      peso: peso ?? this.peso,
-      ojos: ojos ?? this.ojos,
-      pelo: pelo ?? this.pelo,
-      piel: piel ?? this.piel,
-      fechaCreacion: fechaCreacion ?? this.fechaCreacion,
-    );
-  }
+    Map<String, int>? habilidades,
+    List<Ataque>?  ataques,
+    List<Hechizo>? hechizos,
+    List<Item>?    inventario,
+  })  : rasgos      = rasgos      ?? [],
+        ideales     = ideales     ?? [],
+        vinculos    = vinculos    ?? [],
+        defectos    = defectos    ?? [],
+        habilidades = habilidades ?? {},
+        ataques     = ataques     ?? [],
+        hechizos    = hechizos    ?? [],
+        inventario  = inventario  ?? [];
 
-  @override
-  String toString() => toJson().toString();
 
-  //  COPY FROM
-  void copyFrom(Personaje otro) {
-    idPersonaje = otro.idPersonaje;
-    idUsuario = otro.idUsuario;
-    nombre = otro.nombre;
-    clase = otro.clase;
-    raza = otro.raza;
-    trasfondo = otro.trasfondo;
-    alineamiento = otro.alineamiento;
-    nombreJugador = otro.nombreJugador;
-    nivel = otro.nivel;
-    puntosExperiencia = otro.puntosExperiencia;
-    fuerza = otro.fuerza;
-    destreza = otro.destreza;
-    constitucion = otro.constitucion;
-    inteligencia = otro.inteligencia;
-    sabiduria = otro.sabiduria;
-    carisma = otro.carisma;
-    claseDeArmadura = otro.claseDeArmadura;
-    puntosGolpeMaximos = otro.puntosGolpeMaximos;
-    habilidades = Map.from(otro.habilidades);
-    ataques = List.from(otro.ataques);
-    hechizos = List.from(otro.hechizos);
-    inventario = List.from(otro.inventario);
-    rasgos = List.from(otro.rasgos);
-    ideales = List.from(otro.ideales);
-    vinculos = List.from(otro.vinculos);
-    defectos = List.from(otro.defectos);
-    edad = otro.edad;
-    altura = otro.altura;
-    peso = otro.peso;
-    ojos = otro.ojos;
-    pelo = otro.pelo;
-    piel = otro.piel;
-    fechaCreacion = otro.fechaCreacion;
-  }
+  factory Personaje.fromJson(Map<String, dynamic> json) => Personaje(
+        id:            json['id'],
+        idUsuario:     json['id_usuario'],
+        nombre:        json['nombre'],
+        clase:         json['clase'],
+        raza:          json['raza'],
+        trasfondo:     json['trasfondo'],
+        alineamiento:  json['alineamiento'],
+        nombreJugador: json['nombre_jugador'],
+        historia:      json['historia'],
+        nivel:         json['nivel']       ?? 1,
+        experiencia:   json['experiencia'] ?? 0,
+        publicado:     json['publicado']   ?? false,
+        fechaCreacion: json['fecha_creacion'] != null ? DateTime.parse(json['fecha_creacion']) : null,
+
+        // Stats
+        fuerza:       json['fuerza']       ?? 10,
+        destreza:     json['destreza']     ?? 10,
+        constitucion: json['constitucion'] ?? 10,
+        inteligencia: json['inteligencia'] ?? 10,
+        sabiduria:    json['sabiduria']    ?? 10,
+        carisma:      json['carisma']      ?? 10,
+
+        // Combate
+        claseArmadura:  json['clase_armadura']   ?? 10,
+        puntosGolpeMax: json['puntos_golpe_max'] ?? 10,
+
+        // Apariencia
+        edad:      json['edad'],
+        altura:    (json['altura'] as num?)?.toDouble(),
+        peso:      (json['peso']   as num?)?.toDouble(),
+        ojos:      json['ojos'],
+        pelo:      json['pelo'],
+        piel:      json['piel'],
+        imagenUrl: json['imagen_url'],
+
+        // Personalidad
+        rasgos:   List<String>.from(json['rasgos']   ?? []),
+        ideales:  List<String>.from(json['ideales']  ?? []),
+        vinculos: List<String>.from(json['vinculos'] ?? []),
+        defectos: List<String>.from(json['defectos'] ?? []),
+
+        // Habilidades
+        habilidades: Map<String, int>.from(json['habilidades'] ?? {}),
+
+        // Listas
+        ataques:   (json['ataques']    as List?)?.map((e) => Ataque.fromJson(e)).toList()  ?? [],
+        hechizos:  (json['hechizos']   as List?)?.map((e) => Hechizo.fromJson(e)).toList() ?? [],
+        inventario: (json['inventario'] as List?)?.map((e) => Item.fromJson(e)).toList()   ?? [],
+      );
+
+ 
+  Map<String, dynamic> toJson() => {
+
+        "id":           id,
+        "id_usuario":   idUsuario,
+        "nombre":       nombre,
+        "clase":        clase,
+        "raza":         raza,
+        "trasfondo":    trasfondo,
+        "alineamiento": alineamiento,
+        "nombre_jugador": nombreJugador,
+        "historia":     historia,
+        "nivel":        nivel,
+        "experiencia":  experiencia,
+        "publicado":    publicado,
+        "fecha_creacion": fechaCreacion?.toIso8601String(),
+
+        // Stats
+
+        "fuerza":       fuerza,
+        "destreza":     destreza,
+        "constitucion": constitucion,
+        "inteligencia": inteligencia,
+        "sabiduria":    sabiduria,
+        "carisma":      carisma,
+
+        // Combate
+
+        "clase_armadura":   claseArmadura,
+        "puntos_golpe_max": puntosGolpeMax,
+
+        // Apariencia
+
+        "edad":      edad,
+        "altura":    altura,
+        "peso":      peso,
+        "ojos":      ojos,
+        "pelo":      pelo,
+        "piel":      piel,
+        "imagen_url": imagenUrl,
+
+        // Personalidad
+
+        "rasgos":   rasgos,
+        "ideales":  ideales,
+        "vinculos": vinculos,
+        "defectos": defectos,
+
+        // Habilidades
+
+        "habilidades": habilidades,
+
+        // Listas
+
+        "ataques":    ataques.map((e)    => e.toJson()).toList(),
+        "hechizos":   hechizos.map((e)   => e.toJson()).toList(),
+        "inventario": inventario.map((e) => e.toJson()).toList(),
+      };
+
+
+  
+  String? get claseBase => clase?.split('/').first;
+  String? get subclase  => clase!.split('/').length > 1  ? clase?.split('/').last : null;
+  
+
+  // Fórmula para modificadores: (stat - 10) / 2 redondeado hacia abajo
+  
+  int modificador(int stat) => ((stat - 10) / 2).floor();
+  int get bonusCompetencia => ((nivel - 1) ~/ 4) + 2;
+
+  int get modFuerza       => modificador(fuerza);
+  int get modDestreza     => modificador(destreza);
+  int get modConstitucion => modificador(constitucion);
+  int get modInteligencia => modificador(inteligencia);
+  int get modSabiduria    => modificador(sabiduria);
+  int get modCarisma      => modificador(carisma);
+
+  
 }

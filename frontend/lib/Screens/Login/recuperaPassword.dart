@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:heroforge/Config/AppConfig.dart';
 import 'package:heroforge/ViewModels/AuthViewModel.dart';
 
 
@@ -34,7 +35,10 @@ class _RecuperapasswordState extends State<Recuperapassword> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: AppBar(backgroundColor: Colors.blueAccent),
+
+      backgroundColor: AppConfig.colorScaffold,
+      
+      appBar: AppBar(backgroundColor: AppConfig.colorAppBar),
 
       body: Form(
         key: _formKey,

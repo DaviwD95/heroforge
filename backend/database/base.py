@@ -1,7 +1,7 @@
 
-from sqlalchemy.orm import sessionmaker, declarative_base
+from sqlalchemy.orm import declarative_base
 
-
+BASE_URL = "http://192.168.18.242:8000"
 
 
 Base = declarative_base()

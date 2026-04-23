@@ -1,5 +1,7 @@
 
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:heroforge/Config/AppConfig.dart';
 import 'package:heroforge/Screens/Login/login.dart';
 import 'package:heroforge/ViewModels/AuthViewModel.dart';
 
@@ -33,10 +35,10 @@ class _LoginsignState extends State<Sign> {
     return SafeArea(
 
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: AppConfig.colorScaffold,
 
         appBar: AppBar(
-          backgroundColor: Colors.blueAccent,          
+          backgroundColor: AppConfig.colorAppBar,          
         ),
 
         body: Padding(
@@ -66,7 +68,7 @@ class _LoginsignState extends State<Sign> {
                     width: 300,
                     child: TextFormField(
                       controller: gmailController,
-                      validator: _validarCampoObligatorio,
+                      validator: _validarEmail,
 
                       decoration: InputDecoration(
                         labelText: "Gmail",
@@ -159,6 +161,18 @@ class _LoginsignState extends State<Sign> {
         ),
       ),
     );
+  }
+
+  String? _validarEmail(String? value) {
+
+    if (value == null || value.trim().isEmpty) {
+      return "Este campo es obligatorio";
+    }
+
+    if (!EmailValidator.validate(value)) {
+      return "El email no es valido";
+    }
+    return null;
   }
 
   String? _validarCampoObligatorio(String? value) {
