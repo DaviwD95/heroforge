@@ -1,7 +1,7 @@
 
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
-import 'package:heroforge/Config/AppConfig.dart';
+import 'package:heroforge/Config/app_config.dart';
 import 'package:heroforge/Screens/Login/login.dart';
 import 'package:heroforge/ViewModels/AuthViewModel.dart';
 

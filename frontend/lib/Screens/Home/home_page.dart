@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:heroforge/Components/UserPop.dart';
-import 'package:heroforge/Config/AppConfig.dart';
-import 'package:heroforge/Screens/Listado/ListadoPersonajes.dart';
+import 'package:heroforge/Components/user_pop.dart';
+import 'package:heroforge/Config/app_config.dart';
+import 'package:heroforge/Screens/Listado/listado_personajes.dart';
+import 'package:heroforge/Screens/dados.dart';
 import 'package:heroforge/ViewModels/PersonajeViewModel.dart';
 import 'package:provider/provider.dart';
+
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -14,7 +16,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  int _paginaActual = 0;
+  int _paginaActual = 1;
   
   late PersonajeViewModel viewModel;
 
@@ -29,7 +31,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {  
 
   final List<Widget> paginas = [
-    const Center(child: Text("Pantalla de Dados")), // índice 0
+    Dados(), // índice 0
     Listadopersonajes(),                             // índice 1
   ];
 

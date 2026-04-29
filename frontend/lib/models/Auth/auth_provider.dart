@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:heroforge/models/Auth/Usuario.dart';
+import 'package:heroforge/models/Auth/usuario.dart';
 
 class AuthProvider extends ChangeNotifier {
   
@@ -34,6 +34,7 @@ class AuthProvider extends ChangeNotifier {
     user = user?.copyWith(fotoUrl: nuevaUrl);
 
     _fotoCacheBuster = DateTime.now().millisecondsSinceEpoch.toString();
+    
     notifyListeners();
   }
 

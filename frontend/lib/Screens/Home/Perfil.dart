@@ -4,12 +4,13 @@ import 'package:flutter/material.dart';
 
 import 'dart:io';
 import 'package:flutter/foundation.dart';
-import 'package:heroforge/Config/AppConfig.dart';
-import 'package:heroforge/Screens/Login/cambiarPassword.dart';
+import 'package:heroforge/Config/app_config.dart';
+import 'package:heroforge/Screens/Login/cambiar_password.dart';
+
 import 'package:heroforge/Screens/Login/login.dart';
 import 'package:heroforge/ViewModels/AuthViewModel.dart';
-import 'package:heroforge/models/Auth/AuthProvider.dart';
-import 'package:heroforge/models/Auth/Usuario.dart';
+import 'package:heroforge/models/Auth/auth_provider.dart';
+import 'package:heroforge/models/Auth/usuario.dart';
 import 'package:image_picker/image_picker.dart';
 
 
@@ -38,6 +39,7 @@ class _PerfilState extends State<Perfil> {
 
 
   } 
+  // para mostrar instantaneamente la foto al cambiarse y poder seleccionar bien la foto segun la plataforma 
 
   File? _imagenFile;
   Uint8List? _imagenBytes; 
@@ -197,6 +199,7 @@ class _PerfilState extends State<Perfil> {
 
 
   String? _validarEmail(String? value) {
+
     if (value == null || value.trim().isEmpty) {
       return "Este campo es obligatorio";
     }
@@ -207,22 +210,23 @@ class _PerfilState extends State<Perfil> {
     return null;
   }
 
-  Future<void> _seleccionarImagen() async {
+  Future<void> _seleccionarImagen() async 
+  {
 
-  final picker = ImagePicker();
+   final picker = ImagePicker();
 
-  //Selleccionar la imagen de la galeria
-  final XFile? image = await picker.pickImage(
-    source: ImageSource.gallery,
-    imageQuality: 70,
-    maxWidth: 300,
-    maxHeight: 300,
-  );
+   //Selleccionar la imagen de la galeria
+   final XFile? image = await picker.pickImage(
+     source: ImageSource.gallery,
+     imageQuality: 70,
+     maxWidth: 300,
+     maxHeight: 300,
+   );
 
-  //Si no se selecciona nada pues no devolvemos nada
-  if (image == null) return;
+   //Si no se selecciona nada pues no devolvemos nada
+   if (image == null) return;
 
-  if (kIsWeb) {
+   if (kIsWeb) {
 
     //En web se usa el bytes, ya que no se tiene acceso tan facil a los archivos, en android usamos FIle
     final bytes = await image.readAsBytes();
@@ -234,20 +238,21 @@ class _PerfilState extends State<Perfil> {
 
     bool? cambio = await vm.cambiarFotoUrl(null, _imagenBytes, context);
 
-  if(cambio == true)
-  {
-    ScaffoldMessenger.of(context).showSnackBar( const SnackBar(content: Text("Se ha cambiado la foto de perfil con exito!")),);
-  }else
-  {
-    ScaffoldMessenger.of(context).showSnackBar( const SnackBar(content: Text("Error, algo salio mal al cambiar la foto de perfil")),);
-  }
+   if(cambio == true)
+   {
+     ScaffoldMessenger.of(context).showSnackBar( const SnackBar(content: Text("Se ha cambiado la foto de perfil con exito!")),);
+   }else
+   {
+     ScaffoldMessenger.of(context).showSnackBar( const SnackBar(content: Text("Error, algo salio mal al cambiar la foto de perfil")),);
+   }
 
-  } else {
+   } else 
+   {
 
-    setState(() {
-    _imagenFile = File(image.path);
-    _imagenBytes = null;
-    });
+     setState(() {
+     _imagenFile = File(image.path);
+     _imagenBytes = null;
+     });
 
     bool? cambio = await vm.cambiarFotoUrl(_imagenFile, null, context);
 
@@ -264,7 +269,8 @@ class _PerfilState extends State<Perfil> {
 
   Widget _buildImage() {
    
-    
+    //Estos if hacen falta pars mostrar instantaneamente la foto al cambiarse, 
+
     if (_imagenBytes != null) {
         return Image.memory(
           _imagenBytes!,

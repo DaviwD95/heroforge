@@ -1,10 +1,10 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:heroforge/Screens/Home/Perfil.dart';
+import 'package:heroforge/Screens/Home/perfil.dart';
 import 'package:heroforge/Screens/Login/login.dart';
-import 'package:heroforge/models/Auth/AuthProvider.dart';
-import 'package:heroforge/models/Auth/Usuario.dart';
+import 'package:heroforge/models/Auth/auth_provider.dart';
+import 'package:heroforge/models/Auth/usuario.dart';
 import 'package:provider/provider.dart';
 
 
@@ -20,7 +20,7 @@ class UserPop extends StatelessWidget {
     return PopupMenuButton(
       
     
-      icon:  CircleAvatar(radius: 30,child: ClipOval(child: SizedBox(width: 110, height: 110, child: _buildImage(user, context)),),),
+      icon:  CircleAvatar(child:  ClipOval(child:  _buildImage(user, context),),),
       
       itemBuilder:(context)
       {
@@ -88,7 +88,7 @@ class UserPop extends StatelessWidget {
 
   }
 
-  //Este widget me ayuda a crear la imagen,evitando pedir mcuhas veces al backend la foto si es innecesario
+  //Este widget me ayuda a crear la imagen,evitando pedir muchas veces al backend la foto si es innecesario
 
   Widget _buildImage(Usuario? user, BuildContext context) {     
     

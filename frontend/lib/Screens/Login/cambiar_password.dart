@@ -1,43 +1,56 @@
 
 import 'package:flutter/material.dart';
-import 'package:heroforge/Config/AppConfig.dart';
+import 'package:heroforge/Config/app_config.dart';
 import 'package:heroforge/ViewModels/AuthViewModel.dart';
 
 
 
-//ENVIAR UN EMAIL CON ENLACE PARA CAMBIAR 
-class Recuperapassword extends StatefulWidget {
-  const Recuperapassword({super.key});
+
+//PANTALLA DONDE SE CAMBIARA LA PASSWOD 
+class Cambiarpassword extends StatefulWidget {
+
+  final String token;
+  const Cambiarpassword({super.key, required this.token});
 
   @override
-  State<Recuperapassword> createState() => _RecuperapasswordState();
+  State<Cambiarpassword> createState() => _CambiarpasswordState();
 }
 
-class _RecuperapasswordState extends State<Recuperapassword> {
+class _CambiarpasswordState extends State<Cambiarpassword> {
 
-  late Authviewmodel vm;
-  late TextEditingController gmailController;
+  //Tokens backend 
 
+  late  Authviewmodel vm;
+  late String token;
+
+  //Para formulario
+
+  late TextEditingController  passwordNuevaController;
   final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
 
-
     super.initState();
 
+
+    
+    token = widget.token;
+    
     vm = Authviewmodel();
 
-    gmailController = TextEditingController();
+    //formulario
+    
+    passwordNuevaController = TextEditingController();
   }
+
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
 
       backgroundColor: AppConfig.colorScaffold,
-      
+
       appBar: AppBar(backgroundColor: AppConfig.colorAppBar),
 
       body: Form(
@@ -45,16 +58,12 @@ class _RecuperapasswordState extends State<Recuperapassword> {
         child: Column(
           children: [
 
-            Text("Introduce el correo de tu cuenta"),
-            
-            const SizedBox(height: 30),
-
             TextFormField(
-              controller: gmailController,
+              controller: passwordNuevaController,
               validator: _validarCampoObligatorio,
 
               decoration: InputDecoration(
-                labelText: "Gmail",
+                labelText: "Contraseña nueva",
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -63,12 +72,14 @@ class _RecuperapasswordState extends State<Recuperapassword> {
 
             const SizedBox(height: 30),
 
-           //Boton para enviar el correo pues 
+           //Boton para aceptar y hacer el cambio 
+
             SizedBox(
               width: 300,
               height: 45,
               child: ElevatedButton(
-                onPressed: enviarEnlace,
+                onPressed: cambiarPassword
+                ,
 
                 style: ElevatedButton.styleFrom(
                   
@@ -79,7 +90,7 @@ class _RecuperapasswordState extends State<Recuperapassword> {
                 ),
 
                 child: const Text(
-                  "Enviar enlace al correo",
+                  "Cambiar contraseña",
                   style: TextStyle(color: Colors.white),
                 ),
               ),
@@ -90,26 +101,26 @@ class _RecuperapasswordState extends State<Recuperapassword> {
     );
   }
 
+
   String? _validarCampoObligatorio(String? value) {
-  if (value == null || value.trim().isEmpty) {
-    return "Este campo es obligatorio";
+    if (value == null || value.trim().isEmpty) {
+      return "Este campo es obligatorio";
+    }
+    return null;
   }
-  return null;
-}
 
-void enviarEnlace() async{
-
+  void cambiarPassword() async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
 
-    bool correoEnviado = await vm.rememberPasswordBack(gmailController.text);
+    bool cambioCorrecto = await vm.resetPasswordBack(token, passwordNuevaController.text);
 
-    if(correoEnviado == true)
+    if(cambioCorrecto == true)
     {
 
       ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Correo enviado con exito"))
+      const SnackBar(content: Text("Contraseña cambiada correctamente"))
     );
 
 
@@ -117,18 +128,14 @@ void enviarEnlace() async{
     {
 
       ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Error, verifica que el correo es el correcto"))
+      const SnackBar(content: Text("Error al cambiar contraseña"))
     );
 
     }
-    
 
-    
+
+
+
   }
 
-
-
-
 }
-
-

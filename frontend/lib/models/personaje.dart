@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:heroforge/models/PersonajeComplementos/Ataque.dart';
+import 'package:heroforge/models/PersonajeComplementos/ataque.dart';
 import 'package:heroforge/models/PersonajeComplementos/Hechizo.dart';
 import 'package:heroforge/models/PersonajeComplementos/Item.dart';
 

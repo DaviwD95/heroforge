@@ -1,14 +1,14 @@
 
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
-import 'package:heroforge/Config/AppConfig.dart';
-import 'package:heroforge/Screens/Login/recuperaPassword.dart';
-import 'package:heroforge/Screens/Sign/signIn.dart';
+import 'package:heroforge/Config/app_config.dart';
+import 'package:heroforge/Screens/Login/recupera_password.dart';
+import 'package:heroforge/Screens/Sign/sign_in.dart';
 
 import 'package:heroforge/ViewModels/AuthViewModel.dart';
-import 'package:heroforge/Screens/Home/homePage.dart';
-import 'package:heroforge/models/Auth/AuthProvider.dart';
-import 'package:heroforge/models/Auth/Usuario.dart';
+import 'package:heroforge/Screens/Home/home_page.dart';
+import 'package:heroforge/models/Auth/auth_provider.dart';
+import 'package:heroforge/models/Auth/usuario.dart';
 import 'package:provider/provider.dart';
 
 class Login extends StatefulWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:heroforge/Screens/Listado/PersonajeTile.dart';
+import 'package:heroforge/Screens/Listado/personaje_tile.dart';
 import 'package:heroforge/ViewModels/PersonajeViewModel.dart';
-import 'package:heroforge/models/Personaje.dart';
+import 'package:heroforge/models/personaje.dart';
 import 'package:provider/provider.dart';
 
 class Listadopersonajes extends StatefulWidget {

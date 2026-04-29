@@ -1,56 +1,43 @@
 
 import 'package:flutter/material.dart';
-import 'package:heroforge/Config/AppConfig.dart';
+import 'package:heroforge/Config/app_config.dart';
 import 'package:heroforge/ViewModels/AuthViewModel.dart';
 
 
 
-
-//PANTALLA DONDE SE CAMBIARA LA PASSWOD 
-class Cambiarpassword extends StatefulWidget {
-
-  final String token;
-  const Cambiarpassword({super.key, required this.token});
+//ENVIAR UN EMAIL CON ENLACE PARA CAMBIAR 
+class Recuperapassword extends StatefulWidget {
+  const Recuperapassword({super.key});
 
   @override
-  State<Cambiarpassword> createState() => _CambiarpasswordState();
+  State<Recuperapassword> createState() => _RecuperapasswordState();
 }
 
-class _CambiarpasswordState extends State<Cambiarpassword> {
+class _RecuperapasswordState extends State<Recuperapassword> {
 
-  //Tokens backend 
+  late Authviewmodel vm;
+  late TextEditingController gmailController;
 
-  late  Authviewmodel vm;
-  late String token;
-
-  //Para formulario
-
-  late TextEditingController  passwordNuevaController;
   final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
 
+
     super.initState();
 
-
-    
-    token = widget.token;
-    
     vm = Authviewmodel();
 
-    //formulario
-    
-    passwordNuevaController = TextEditingController();
+    gmailController = TextEditingController();
   }
-
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
 
       backgroundColor: AppConfig.colorScaffold,
-
+      
       appBar: AppBar(backgroundColor: AppConfig.colorAppBar),
 
       body: Form(
@@ -58,12 +45,16 @@ class _CambiarpasswordState extends State<Cambiarpassword> {
         child: Column(
           children: [
 
+            Text("Introduce el correo de tu cuenta"),
+            
+            const SizedBox(height: 30),
+
             TextFormField(
-              controller: passwordNuevaController,
+              controller: gmailController,
               validator: _validarCampoObligatorio,
 
               decoration: InputDecoration(
-                labelText: "Contraseña nueva",
+                labelText: "Gmail",
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -72,14 +63,12 @@ class _CambiarpasswordState extends State<Cambiarpassword> {
 
             const SizedBox(height: 30),
 
-           //Boton para aceptar y hacer el cambio 
-
+           //Boton para enviar el correo pues 
             SizedBox(
               width: 300,
               height: 45,
               child: ElevatedButton(
-                onPressed: cambiarPassword
-                ,
+                onPressed: enviarEnlace,
 
                 style: ElevatedButton.styleFrom(
                   
@@ -90,7 +79,7 @@ class _CambiarpasswordState extends State<Cambiarpassword> {
                 ),
 
                 child: const Text(
-                  "Cambiar contraseña",
+                  "Enviar enlace al correo",
                   style: TextStyle(color: Colors.white),
                 ),
               ),
@@ -101,26 +90,26 @@ class _CambiarpasswordState extends State<Cambiarpassword> {
     );
   }
 
-
   String? _validarCampoObligatorio(String? value) {
-    if (value == null || value.trim().isEmpty) {
-      return "Este campo es obligatorio";
-    }
-    return null;
+  if (value == null || value.trim().isEmpty) {
+    return "Este campo es obligatorio";
   }
+  return null;
+}
 
-  void cambiarPassword() async {
+void enviarEnlace() async{
+
     if (!_formKey.currentState!.validate()) {
       return;
     }
 
-    bool cambioCorrecto = await vm.resetPasswordBack(token, passwordNuevaController.text);
+    bool correoEnviado = await vm.rememberPasswordBack(gmailController.text);
 
-    if(cambioCorrecto == true)
+    if(correoEnviado == true)
     {
 
       ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Contraseña cambiada correctamente"))
+      const SnackBar(content: Text("Correo enviado con exito"))
     );
 
 
@@ -128,14 +117,18 @@ class _CambiarpasswordState extends State<Cambiarpassword> {
     {
 
       ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Error al cambiar contraseña"))
+      const SnackBar(content: Text("Error, verifica que el correo es el correcto"))
     );
 
     }
+    
 
-
-
-
+    
   }
 
+
+
+
 }
+
+

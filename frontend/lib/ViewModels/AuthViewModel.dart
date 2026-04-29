@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:heroforge/Config/AppConfig.dart';
-import 'package:heroforge/models/Auth/AuthProvider.dart';
+import 'package:heroforge/Config/app_config.dart';
+import 'package:heroforge/models/Auth/auth_provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
@@ -143,9 +143,11 @@ class Authviewmodel {
 
       String fotoUrl = data["foto_url"];
 
-      Provider.of<AuthProvider>(context, listen: false).user!.fotoUrl =  fotoUrl;    
+      //Provider.of<AuthProvider>(context, listen: false).user!.fotoUrl =  fotoUrl;    
       
-      Provider.of<AuthProvider>(context, listen: false).notifyListeners();
+      //Provider.of<AuthProvider>(context, listen: false).notifyListeners();
+
+      Provider.of<AuthProvider>(context, listen: false).actualizarFoto(fotoUrl);
 
       return true;
 

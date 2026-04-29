@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 
 
-import 'Personaje.dart';
+import 'personaje.dart';
 
 class DirectorioPersonajes with ChangeNotifier {
 

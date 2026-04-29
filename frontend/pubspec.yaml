@@ -32,6 +32,7 @@ dependencies:
     sdk: flutter
   email_validator: ^2.1.17
   image_picker: ^1.0.0
+  font_awesome_flutter: ^10.7.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -69,6 +70,16 @@ flutter:
     - assets/clases/clerigo.png
     - assets/clases/picaro.png
     - assets/clases/artificiero.png
+
+   
+    - assets/dados/d4.png
+    - assets/dados/d6.png
+    - assets/dados/d8.png
+    - assets/dados/d10.png
+    - assets/dados/d12.png
+    - assets/dados/d20.png
+    - assets/dados/d100.png
+
 
   # To add assets to your application, add an assets section, like this:
   # assets:

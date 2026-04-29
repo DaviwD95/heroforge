@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:heroforge/Screens/Login/cambiarPassword.dart';
+import 'package:heroforge/Screens/Login/cambiar_password.dart';
+
 import 'package:heroforge/Screens/Login/login.dart';
-import 'package:heroforge/Screens/Home/homePage.dart';
-import 'package:heroforge/models/Auth/AuthProvider.dart';
+
+import 'package:heroforge/models/Auth/auth_provider.dart';
 import 'package:heroforge/models/directorio_personajes.dart';
 import 'package:heroforge/ViewModels/PersonajeViewModel.dart';
 import 'package:provider/provider.dart';
