@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import 'dart:math';
@@ -14,11 +16,15 @@ class Dados extends StatefulWidget {
 
 class _DadosState extends State<Dados> {
 
+    bool _animando = false;
+
+    Timer? _timer;
+
     int modificador = 0;
     int cantidad = 1; 
 
     int? resultadoActual;
-    String? tiradaModificadorAparte;
+    String? tiradaModificadorAparte = "";
     List<String> historial = [];
 
 
@@ -39,7 +45,7 @@ class _DadosState extends State<Dados> {
       children: [
 
         Container(
-          color: Colors.grey[300],
+          color: Color(0xFFD4A574),// Colors.grey[300],
 
           child: Center(
             child: Column(
@@ -56,6 +62,7 @@ class _DadosState extends State<Dados> {
                     Column(
                       children: [
                         IconButton(onPressed: () {
+                          tirarDado(4);
 
 
                         }, icon: Image.asset('assets/dados/d4.png',  
@@ -68,6 +75,7 @@ class _DadosState extends State<Dados> {
                     Column(
                       children: [
                         IconButton(onPressed: () {
+                          tirarDado(6);
 
 
                         }, icon: Image.asset('assets/dados/d6.png', 
@@ -80,6 +88,7 @@ class _DadosState extends State<Dados> {
                     Column(
                       children: [
                         IconButton(onPressed: () {
+                          tirarDado(8);
 
 
                         }, icon: Image.asset('assets/dados/d8.png', 
@@ -92,6 +101,7 @@ class _DadosState extends State<Dados> {
                     Column(
                       children: [
                         IconButton(onPressed: () {
+                          tirarDado(10);
 
 
                         }, icon: Image.asset('assets/dados/d10.png', 
@@ -114,6 +124,7 @@ class _DadosState extends State<Dados> {
                     Column(
                       children: [
                         IconButton(onPressed: () {
+                          tirarDado(12);
 
 
                         }, icon: Image.asset('assets/dados/d12.png',  
@@ -126,6 +137,7 @@ class _DadosState extends State<Dados> {
                     Column(
                       children: [
                         IconButton(onPressed: () {
+                          tirarDado(20);
 
 
                         }, icon: Image.asset('assets/dados/d20.png', 
@@ -138,6 +150,7 @@ class _DadosState extends State<Dados> {
                     Column(
                       children: [
                         IconButton(onPressed: () {
+                          tirarDado(100);
 
                           
                         }, icon: Image.asset('assets/dados/d100.png', 
@@ -160,17 +173,26 @@ class _DadosState extends State<Dados> {
         SizedBox(height: 30),
 
         
-        Container(
+        Container(         
           margin: EdgeInsets.symmetric(horizontal: 16),
           padding: EdgeInsets.all(16),
-
+        
           decoration: BoxDecoration(
             color: Colors.deepPurple[50],
             borderRadius: BorderRadius.circular(12),
             border: Border.all(color: Colors.deepPurple),),
             
-            child: Text("Resultado: $resultadoActual",
-            style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.deepPurple),),
+            child: Column(
+              children: [
+                Text("${resultadoActual ?? 0}",
+                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.deepPurple),),
+        
+                SizedBox(height: 5,),
+        
+                Text("$tiradaModificadorAparte",
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.deepPurple),)
+              ],
+            ),
             ),
 
          SizedBox(height: 30),
@@ -198,6 +220,8 @@ class _DadosState extends State<Dados> {
             ],
           ),
         ),
+
+        SizedBox(height: 30),
 
 
         //------Cantidad/Modificador 
@@ -351,13 +375,70 @@ class _DadosState extends State<Dados> {
     );
   }
 
-
-
   void tirarDado(int caras) {
+    //Primero calculamos el resultado real
+    final resultadoFinal = sumarDados(caras);
+    int ticks = 0;
+
+    //Cancelamps los ticks por si ya habia uno empezad
+    _timer?.cancel();
+
+    //Hacemos que en pantalla se calcule varias veces el resultado variando
+    _timer = Timer.periodic(Duration(milliseconds: 80), (timer) {
+      setState(() {
+        resultadoActual = sumarDados(caras);
+      });
+
+      ticks++;
+
+      if (ticks >= 15) {
+        // después de 15 ticks cae el resultado final
+        timer.cancel();
+
+        setState(() {
+          resultadoActual = resultadoFinal + modificador;
+          tiradaModificadorAparte = "$resultadoFinal + $modificador";
+          historial.insert(
+            0,
+            "${cantidad}d$caras + $modificador = $resultadoActual",
+          );
+          if (historial.length > 10) historial.removeLast();
+        });
+      }
+    });
+  }
+
+  int sumarDados(int caras) {
+
+    int suma = 0;
+    for (int i = 0; i < cantidad; i++) {
+      suma += Random().nextInt(caras) + 1;
+    }
+    return suma;
+
+  }
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+ /**
+  *  void tirarDado(int caras) {
 
    setState(() {
 
      final tirada = Random().nextInt(caras) + 1;
+     
 
      resultadoActual = tirada + modificador;
 
@@ -367,6 +448,9 @@ class _DadosState extends State<Dados> {
 
      if (historial.length > 10) historial.removeLast(); // tiene de tope 10
 
+     _animando = !_animando; 
+
   });
  }
+  */
 }

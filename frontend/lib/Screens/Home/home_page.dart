@@ -25,6 +25,8 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     viewModel = Provider.of<PersonajeViewModel>(context, listen: false);
     viewModel.init(context);
+
+    
   }
 
   @override
@@ -44,6 +46,8 @@ class _HomePageState extends State<HomePage> {
 
         actions: [
 
+          IconButton(onPressed: () { viewModel.addPersonaje(context);}, icon: Icon(Icons.add)),
+
           UserPop()
 
         ],
@@ -51,6 +55,10 @@ class _HomePageState extends State<HomePage> {
         ),  
 
       bottomNavigationBar: BottomNavigationBar(
+
+         //backgroundColor: AppConfig.colorNavBar,
+         //selectedItemColor: Colors.amber,
+         //unselectedItemColor: Colors.white60,
 
         currentIndex: _paginaActual,
 

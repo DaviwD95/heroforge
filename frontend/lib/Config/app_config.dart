@@ -25,8 +25,14 @@ class AppConfig {
 
    static Color get colorAppBar {
 
-  return Colors.orange[100]!;
+  return  Colors.orange[100]!; //rojo capaz ¿? 
   
   }
+
+  static Color get colorNavBar {
+  return Colors.redAccent; 
+}
+
+ 
 
 }
