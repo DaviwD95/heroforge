@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 
 import 'dart:math';
 
+import 'package:heroforge/ViewModels/DadosViewModel.dart';
+
 
 
 
@@ -15,8 +17,12 @@ class Dados extends StatefulWidget {
 }
 
 class _DadosState extends State<Dados> {
+  
 
-    bool _animando = false;
+
+    final Dadosviewmodel _dadosviewmodel = Dadosviewmodel();
+    String? frase;
+    
 
     Timer? _timer;
 
@@ -26,6 +32,24 @@ class _DadosState extends State<Dados> {
     int? resultadoActual;
     String? tiradaModificadorAparte = "";
     List<String> historial = [];
+
+    @override void initState() {
+      super.initState();
+      cargarDato();
+    
+    }
+
+
+    void cargarDato() async {
+      
+      frase = await _dadosviewmodel.getDato(context);
+      
+      setState(() {});
+      
+    }
+  
+  
+
 
 
 
@@ -52,6 +76,8 @@ class _DadosState extends State<Dados> {
                mainAxisAlignment: MainAxisAlignment.center, 
             
               children: [
+
+                Text(frase ?? ""),
             
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center, 

@@ -17,10 +17,10 @@ class Personaje extends ChangeNotifier {
 
   String? nombreJugador;
   String? historia;
-  int     nivel;
-  int     experiencia;
-  bool    publicado;
-  DateTime? fechaCreacion;
+  int?     nivel;
+  int?     experiencia;
+  bool?    publicado;
+  DateTime? fechaCreacion; //auto 
 
   // Stats
 
@@ -48,10 +48,10 @@ class Personaje extends ChangeNotifier {
 
   // Personalidad
 
-  List<String> rasgos;
-  List<String> ideales;
-  List<String> vinculos;
-  List<String> defectos;
+  String? rasgos;
+  String? ideales;
+  String? vinculos;
+  String? defectos;
 
   //Habilidades secundarias 
 
@@ -59,9 +59,9 @@ class Personaje extends ChangeNotifier {
 
   // Listas (tablas separadas en backend) 
 
-  List<Ataque>  ataques;
-  List<Hechizo> hechizos;
-  List<Item>    inventario;
+  List<Ataque>?  ataques;
+  List<Hechizo>? hechizos;
+  List<Item>?    inventario;
 
   Personaje({
     this.id,
@@ -92,22 +92,19 @@ class Personaje extends ChangeNotifier {
     this.pelo,
     this.piel,
     this.imagenUrl,
-    List<String>? rasgos,
-    List<String>? ideales,
-    List<String>? vinculos,
-    List<String>? defectos,
+    this.rasgos,
+    this.ideales,
+    this.vinculos,
+    this.defectos,    
     Map<String, int>? habilidades,
     List<Ataque>?  ataques,
     List<Hechizo>? hechizos,
     List<Item>?    inventario,
-  })  : rasgos      = rasgos      ?? [],
-        ideales     = ideales     ?? [],
-        vinculos    = vinculos    ?? [],
-        defectos    = defectos    ?? [],
+  })  : 
         habilidades = habilidades ?? {},
         ataques     = ataques     ?? [],
         hechizos    = hechizos    ?? [],
-        inventario  = inventario  ?? [];
+        inventario  = inventario ?? []; 
 
 
   factory Personaje.fromJson(Map<String, dynamic> json) => Personaje(
@@ -147,10 +144,10 @@ class Personaje extends ChangeNotifier {
         imagenUrl: json['imagen_url'],
 
         // Personalidad
-        rasgos:   List<String>.from(json['rasgos']   ?? []),
-        ideales:  List<String>.from(json['ideales']  ?? []),
-        vinculos: List<String>.from(json['vinculos'] ?? []),
-        defectos: List<String>.from(json['defectos'] ?? []),
+        rasgos:   json['rasgos'],
+        ideales:  json['ideales'],
+        vinculos: json['vinculos'],
+        defectos: json['defectos'],
 
         // Habilidades
         habilidades: Map<String, int>.from(json['habilidades'] ?? {}),
@@ -215,9 +212,9 @@ class Personaje extends ChangeNotifier {
 
         // Listas
 
-        "ataques":    ataques.map((e)    => e.toJson()).toList(),
-        "hechizos":   hechizos.map((e)   => e.toJson()).toList(),
-        "inventario": inventario.map((e) => e.toJson()).toList(),
+        "ataques":    ataques?.map((e)    => e.toJson()).toList(),
+        "hechizos":   hechizos?.map((e)   => e.toJson()).toList(),
+        "inventario": inventario?.map((e) => e.toJson()).toList(),
       };
 
 
@@ -229,7 +226,7 @@ class Personaje extends ChangeNotifier {
   // Fórmula para modificadores: (stat - 10) / 2 redondeado hacia abajo
   
   int modificador(int stat) => ((stat - 10) / 2).floor();
-  int get bonusCompetencia => ((nivel - 1) ~/ 4) + 2;
+  int get bonusCompetencia => ((nivel! - 1) ~/ 4) + 2;
 
   int get modFuerza       => modificador(fuerza);
   int get modDestreza     => modificador(destreza);
@@ -237,6 +234,110 @@ class Personaje extends ChangeNotifier {
   int get modInteligencia => modificador(inteligencia);
   int get modSabiduria    => modificador(sabiduria);
   int get modCarisma      => modificador(carisma);
+
+  //Calcular el modHabilidad(incluso con el  bono comp)
+
+  int modHabilidad(String hab) {
+    
+
+    final stats = {
+      
+     'acrobacias': modDestreza,     'atletismo': modFuerza,
+     'C.arcano': modInteligencia,   'engano': modCarisma,
+     'historia': modInteligencia,   'interpretacion': modCarisma,
+     'intimidacion': modCarisma,    'investigacion': modInteligencia,
+     'juegoDeManos': modDestreza,   'medicina': modSabiduria,
+     'naturaleza': modInteligencia, 'percepcion': modSabiduria,
+     'perspicacia': modSabiduria,   'persuasion': modCarisma,
+     'religion': modInteligencia,   'sigilo': modDestreza,
+     'supervivencia': modSabiduria, 'tratoAnimales': modSabiduria,
+     };
+
+    final compClase = {
+      
+
+     'Mago':        ['C.arcano', 'historia', 'investigacion', 'medicina', 'religion', 'perspicacia'],
+     'Artificiero': ['C.arcano', 'historia', 'investigacion', 'medicina', 'naturaleza', 'percepcion'],
+     'Guerrero':    ['atletismo', 'intimidacion', 'supervivencia', 'percepcion', 'historia', 'acrobacias'],
+     'Picaro':      ['acrobacias', 'engano', 'perspicacia', 'intimidacion', 'investigacion', 'sigilo', 'juegoDeManos', 'persuasion'],
+     'Clerigo':     ['historia', 'medicina', 'persuasion', 'religion', 'perspicacia', 'intimidacion'],
+   };
+
+    final tieneComp = (compClase[claseBase] ?? []).contains(hab);
+
+    return (stats[hab] ?? 0) + (tieneComp ? bonusCompetencia : 0);
+  }
+
+  bool tieneCompHabilidad(String hab) {
+    
+    final compClase = {
+     'Mago':        ['C.arcano', 'historia', 'investigacion', 'medicina', 'religion', 'perspicacia'],
+     'Artificiero': ['C.arcano', 'historia', 'investigacion', 'medicina', 'naturaleza', 'percepcion'],
+     'Guerrero':    ['atletismo', 'intimidacion', 'supervivencia', 'percepcion', 'historia', 'acrobacias'],
+     'Picaro':      ['acrobacias', 'engano', 'perspicacia', 'intimidacion', 'investigacion', 'sigilo', 'juegoDeManos', 'persuasion'],
+     'Clerigo':     ['historia', 'medicina', 'persuasion', 'religion', 'perspicacia', 'intimidacion'],
+    };
+    return (compClase[claseBase] ?? []).contains(hab);
+
+  }
+
+//PAra las tiradas de salvacion
+
+  int modSalvacion(String stat) {
+
+    final compSalv = {
+      'Guerrero': ['FUE', 'CON'],
+      'Picaro': ['DES', 'INT'],
+      'Clerigo': ['SAB', 'CAR'],
+      'Mago': ['INT', 'SAB'],
+      'Artificiero': ['CON', 'INT'],
+    };
+
+    final bases = {
+      'FUE': modFuerza,
+      'DES': modDestreza,
+      'CON': modConstitucion,
+      'INT': modInteligencia,
+      'SAB': modSabiduria,
+      'CAR': modCarisma,
+    };
+
+    final base = bases[stat] ?? 0;
+
+    final tieneComp = (compSalv[claseBase] ?? []).contains(stat);
+    return base + (tieneComp ? bonusCompetencia : 0);
+
+  }
+
+  bool tieneCompSalvacion(String stat) {
+
+    final compSalv = {
+      'Guerrero': ['FUE', 'CON'],
+      'Picaro': ['DES', 'INT'],
+      'Clerigo': ['SAB', 'CAR'],
+      'Mago': ['INT', 'SAB'],
+      'Artificiero': ['CON', 'INT'],
+    };
+    return (compSalv[claseBase] ?? []).contains(stat);
+
+  }
+
+  String statDeHabilidad(String hab) {
+
+  final deps = {
+    'acrobacias': 'DES',     'atletismo': 'FUE',
+    'C.arcano': 'INT',       'engano': 'CAR',
+    'historia': 'INT',       'interpretacion': 'CAR',
+    'intimidacion': 'CAR',   'investigacion': 'INT',
+    'juegoDeManos': 'DES',   'medicina': 'SAB',
+    'naturaleza': 'INT',     'percepcion': 'SAB',
+    'perspicacia': 'SAB',    'persuasion': 'CAR',
+    'religion': 'INT',       'sigilo': 'DES',
+    'supervivencia': 'SAB',  'tratoAnimales': 'SAB',
+  };
+  
+  return deps[hab] ?? hab;
+}
 
   
 }

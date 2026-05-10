@@ -57,10 +57,10 @@ class Personaje(Base):
 
     # Personalidad, los guardo como un json, ya que no vale la pena tener 4 tablas extras con fk 
    
-    rasgos   = Column(JSON, default=list)
-    ideales  = Column(JSON, default=list)
-    vinculos = Column(JSON, default=list)
-    defectos = Column(JSON, default=list)
+    rasgos   = Column(String(100))
+    ideales  = Column(String(100))
+    vinculos = Column(String(100))
+    defectos = Column(String(100))
 
     # Habilidadees secundarias como JSON 
     habilidades = Column(JSON, default=dict)

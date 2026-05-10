@@ -1,10 +1,12 @@
 
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
+
 import 'package:flutter/material.dart';
 import 'package:heroforge/Config/app_config.dart';
-import 'package:heroforge/Screens/Personajes/personaje_add_basico.dart';
+import 'package:heroforge/Screens/Personajes/personaje_add_1.dart';
+import 'package:heroforge/Screens/Personajes/personaje_add_2.dart';
+import 'package:heroforge/Screens/Personajes/personaje_add_3.dart';
 import 'package:heroforge/models/Auth/auth_provider.dart';
 import 'package:heroforge/models/personaje.dart';
 import 'package:heroforge/models/directorio_personajes.dart';
@@ -58,16 +60,129 @@ class PersonajeViewModel extends ChangeNotifier {
   {
     Personaje personajeNuevo = Personaje();
 
-    bool? condicion =await  Navigator.of(context).push<bool?>(MaterialPageRoute(builder: (context) => PersonajeAddBasico(personaje: personajeNuevo),),);
+    Personaje? personaje1  = await  Navigator.of(context).push<Personaje?>(MaterialPageRoute(builder: (context) => PersonajeAdd1(personaje: personajeNuevo),),);
     //  print(jsonEncode(usuarioNuevo.toJson()));
 
+    if (personaje1 == null) return null;    
+
+    Personaje? personaje2 = await  Navigator.of(context).push<Personaje?>(MaterialPageRoute(builder: (context) => PersonajeAdd2(personaje: personaje1),),);
+
+
+    if (personaje2 == null) return null;
+
+
+
+    Personaje? personaje3 = await Navigator.of(context).push<Personaje?>( MaterialPageRoute(builder: (context) => PersonajeAdd3(personaje: personaje2)),);
+
+    if (personaje3 == null) return null;
+
+    final token = Provider.of<AuthProvider>(context, listen: false).token;
+
+    personaje3.idUsuario = Provider.of<AuthProvider>(context, listen: false).user!.id;
+
+
+    final response = await http.post(
+
+        Uri.parse("$baseUrl/Personajes/add"),
+        headers: {"Content-Type": "application/json", "Authorization": "Bearer $token",},
+        body:  jsonEncode(personaje3.toJson())
+      );
+
+    if (response.statusCode == 200)
+    {
+      final data = jsonDecode(response.body);
+      personaje3.id = data['id'];
+          
+      directorio.agregar(personaje3);
+      return true;
+
+    }else
+    {
+      return false;
+    }
+
+
+  }
+
+
+  Future<bool?> editPersonaje(BuildContext context, Personaje personaje) async 
+  {
     
 
+    Personaje? personaje1  = await  Navigator.of(context).push<Personaje?>(MaterialPageRoute(builder: (context) => PersonajeAdd1(personaje: personaje),),);
+    //  print(jsonEncode(usuarioNuevo.toJson()));
 
-    return null;
+    if (personaje1 == null) return null;    
+
+    Personaje? personaje2 = await  Navigator.of(context).push<Personaje?>(MaterialPageRoute(builder: (context) => PersonajeAdd2(personaje: personaje1),),);
+
+
+    if (personaje2 == null) return null;
 
 
 
+    Personaje? personaje3 = await Navigator.of(context).push<Personaje?>( MaterialPageRoute(builder: (context) => PersonajeAdd3(personaje: personaje2)),);
+
+    if (personaje3 == null) return null;
+
+    final token = Provider.of<AuthProvider>(context, listen: false).token;
+
+    final response = await http.post(
+
+        Uri.parse("$baseUrl/Personajes/edit"),
+        headers: {"Content-Type": "application/json", "Authorization": "Bearer $token",},
+        body:  jsonEncode(personaje3.toJson())
+      );
+
+    if (response.statusCode == 200) {
+
+      //Busco el id y ya lo asigno 
+
+      final index = directorio.personajes.indexWhere(
+        (p) => p.id == personaje3.id,
+      );
+
+      if (index != -1) {
+        directorio.actualizar(index, personaje3);
+      }
+
+      return true;
+      
+    }else
+    {
+      return false;
+    }
+
+  }
+
+
+  
+  Future<bool?> removePersonaje(BuildContext context, Personaje? personaje) async 
+  {    
+
+    
+    if (personaje == null) return null;
+
+    final token = Provider.of<AuthProvider>(context, listen: false).token;
+
+    final response = await http.post(
+
+        Uri.parse("$baseUrl/Personajes/remove"),
+        headers: {"Content-Type": "application/json", "Authorization": "Bearer $token",},
+        body:  jsonEncode(personaje.toJson())
+      );
+
+    if (response.statusCode == 200) {
+
+
+      directorio.eliminar(personaje.id!);
+
+      return true;
+      
+    }else
+    {
+      return false;
+    }
 
   }
 

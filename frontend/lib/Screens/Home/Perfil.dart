@@ -5,9 +5,12 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:heroforge/Config/app_config.dart';
+import 'package:heroforge/Screens/Extra/quienes_somos.dart';
+import 'package:heroforge/Screens/Extra/terminos_condiciones.dart';
 import 'package:heroforge/Screens/Login/cambiar_password.dart';
 
 import 'package:heroforge/Screens/Login/login.dart';
+
 import 'package:heroforge/ViewModels/AuthViewModel.dart';
 import 'package:heroforge/models/Auth/auth_provider.dart';
 import 'package:heroforge/models/Auth/usuario.dart';
@@ -53,8 +56,23 @@ class _PerfilState extends State<Perfil> {
         backgroundColor: AppConfig.colorScaffold,
 
         appBar: AppBar(
-          backgroundColor: AppConfig.colorAppBar, title: Text('Perfil')
-          ),
+          backgroundColor: AppConfig.colorAppBar, title: Text('Perfil'),
+
+          actions: [
+
+            IconButton(onPressed: ()
+            {
+              Navigator.of(context).push( MaterialPageRoute(builder: (context) => TerminosCondiciones()),);
+
+            }, icon: Icon(Icons.content_paste_search_outlined)),
+
+            IconButton(onPressed: ()
+            {
+              Navigator.of(context).push( MaterialPageRoute(builder: (context) => QuienesSomos()),);
+
+            }, icon: Icon(Icons.person))
+          ],
+        ),
 
         body: ListView(
 
@@ -75,6 +93,8 @@ class _PerfilState extends State<Perfil> {
 
                  child: ClipOval(child: SizedBox(width: 110, height: 110, child: _buildImage(), ),),)        
             ),
+
+            SizedBox(height: 40,),
 
             Card(
 
@@ -139,7 +159,9 @@ class _PerfilState extends State<Perfil> {
 
 
 
-            ),    
+            ), 
+
+            SizedBox(height: 25,),   
 
             ElevatedButton.icon(
 
@@ -157,7 +179,9 @@ class _PerfilState extends State<Perfil> {
               icon: Icon(Icons.lock),
               label: Text("Cambiar contraseña"),
               
-              ) ,        
+            ),
+
+            SizedBox(height: 40),        
 
             Card(
               color: Colors.red,

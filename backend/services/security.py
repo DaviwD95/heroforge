@@ -1,5 +1,5 @@
 
-
+from fastapi import Header, HTTPException
 
 from passlib.context import CryptContext
 from datetime import datetime, timedelta
@@ -55,3 +55,14 @@ def verify_token(token: str):
 
     except Exception:
         return None
+    
+
+
+def get_payload(authorization: str = Header(...)):
+
+    token = authorization.replace("Bearer ", "")
+    payload = verify_token(token)
+    
+    if not payload:
+        raise HTTPException(status_code=401, detail="Token inválido")
+    return payload

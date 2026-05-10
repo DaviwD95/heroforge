@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:heroforge/Components/user_pop.dart';
 import 'package:heroforge/Config/app_config.dart';
 import 'package:heroforge/Screens/Listado/listado_personajes.dart';
-import 'package:heroforge/Screens/dados.dart';
+import 'package:heroforge/Screens/Extra/dados.dart';
 import 'package:heroforge/ViewModels/PersonajeViewModel.dart';
 import 'package:provider/provider.dart';
 
@@ -46,7 +46,21 @@ class _HomePageState extends State<HomePage> {
 
         actions: [
 
-          IconButton(onPressed: () { viewModel.addPersonaje(context);}, icon: Icon(Icons.add)),
+          IconButton(onPressed: () async { 
+
+            bool? condicion =  await viewModel.addPersonaje(context);
+
+            if (condicion == true) {
+
+              ScaffoldMessenger.of(context).showSnackBar( SnackBar(content: Text("Personaje creado con exito")),);
+            } else if (condicion == false) 
+            {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Error, algo salio mal en la creacion"),),);
+            }
+
+           
+            
+            }, icon: Icon(Icons.add)),
 
           UserPop()
 

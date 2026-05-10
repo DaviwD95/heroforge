@@ -22,8 +22,8 @@ class DirectorioPersonajes with ChangeNotifier {
     notifyListeners();
   }  
 
-  void eliminar(int i) {
-    personajes.removeAt(i);
+  void eliminar(int id) {
+    _personajes.removeWhere((p) => p.id == id);
     notifyListeners();
   }
 
@@ -59,20 +59,10 @@ class DirectorioPersonajes with ChangeNotifier {
   notifyListeners();
 }
 
-  // FILTROS UTILES
+  
   
 
-  List<Personaje> porClase(String clase) {
-    return personajes.where((p) => p.clase == clase).toList();
-  }
 
-  List<Personaje> porRaza(String raza) {
-    return personajes.where((p) => p.raza == raza).toList();
-  }
-
-  List<Personaje> nivelMayorA(int nivel) {
-    return personajes.where((p) => p.nivel > nivel).toList();
-  }
 
   
 
