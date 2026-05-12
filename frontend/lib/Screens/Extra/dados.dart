@@ -78,6 +78,8 @@ class _DadosState extends State<Dados> {
               children: [
 
                 Text(frase ?? ""),
+
+                SizedBox(height: 15),
             
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center, 

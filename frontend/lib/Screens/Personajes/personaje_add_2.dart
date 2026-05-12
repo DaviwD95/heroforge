@@ -128,9 +128,11 @@ class _PersonajeAdd2State extends State<PersonajeAdd2> {
       body: Form(
         key:  _formKey,
         child: ListView(
-          padding: EdgeInsets.all(8.0),
+          padding: EdgeInsets.all(10.0),
           children: [
             //Como hago pars hacer que el texto este justificao, osea todo a la izquioerda? 
+
+            Divider(color: Colors.blue, thickness: 6),
 
             Text("Estadisticas Base, Puntos de Golpe y Clase de Armadura", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),            
               
@@ -163,6 +165,13 @@ class _PersonajeAdd2State extends State<PersonajeAdd2> {
       
             infoClase("Artificiero", "8", "5"),
 
+            SizedBox(height: 15,),
+
+            Text("Las estadísticas base no suben automáticamente al subir de nivel. A los niveles 4, 8, 12, 16 y 19 obtienes una Mejora de Característica: puedes subir 2 puntos a una stat o 1 punto a dos stats distintas. El Guerrero tiene mejoras adicionales en los niveles 6 y 14, y el Pícaro en el nivel 10.", 
+            style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600), textAlign: TextAlign.justify,),
+
+
+
             SizedBox(height: 15),
   
 
@@ -184,6 +193,8 @@ class _PersonajeAdd2State extends State<PersonajeAdd2> {
 
 
             Divider(color: Colors.black, thickness: 5),
+
+
 
 
             SizedBox(height: 25),
@@ -219,6 +230,12 @@ class _PersonajeAdd2State extends State<PersonajeAdd2> {
               ],
             ),
 
+            SizedBox(height: 20,),
+
+            
+             Text("Humano → +1 FUE  +1 DES  +1 CON  +1 INT  +1 SAB  +1 CAR | Elfo → +2 DES  | Enano → +2 CON  | Mediano → +2 DES ",
+             style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600), textAlign: TextAlign.justify,),
+                       
             SizedBox(height: 20),                  
 
 
@@ -268,9 +285,12 @@ class _PersonajeAdd2State extends State<PersonajeAdd2> {
                   child: Column(
                     children: [
 
+                     // SizedBox(height: 9.5), 
+
                       Center(child: Image.asset('assets/dados/d6.png',width: 16,height: 16,),),
                               
-                      ListTile(                       
+                      ListTile(      
+                        contentPadding: EdgeInsets.zero,             
                         title: Text(
                           "Método dados",
                           style: TextStyle(fontSize: 13),
@@ -399,9 +419,10 @@ class _PersonajeAdd2State extends State<PersonajeAdd2> {
                     
                     children: [
 
-                      Center(child: Icon(Icons.data_array)),
+                      Center(child: Icon(Icons.data_array, size: 16,)),
                               
                       ListTile(
+                        contentPadding: EdgeInsets.zero,  
                          
                         title: Text(
                           "Método Seleccion",

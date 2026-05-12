@@ -4,6 +4,22 @@
 
 
 
+String? validarDouble(String? value, {bool obligatorio = false}) {
+
+  if (obligatorio && (value == null || value.trim().isEmpty)) {
+    return "Obligatorio";
+  }
+
+  final n = double.tryParse(value ?? '');
+
+  if (value != null && value.isNotEmpty && n == null) {
+    return "Solo números (0.0)";
+  }
+  return null;
+
+}
+
+
 String? validarCampoObligatorio(String? value) {
   
   
@@ -14,7 +30,7 @@ String? validarCampoObligatorio(String? value) {
 }
 
 
-String? validarNumeroObligatorio(String? value, { bool obligatorio = true}) {
+String? validarNumeroObligatorio(String? value, { bool obligatorio = false}) {
   
 
   if (obligatorio && (value == null || value.trim().isEmpty))
@@ -65,14 +81,15 @@ Widget dropDown(String label, String? value, List<String> opciones, ValueChanged
   );
 }
 
-Widget campoNumero(String label, TextEditingController controller, Color colorFondo, {bool obligatorio = false}) {
+Widget campoNumero(String label, TextEditingController controller, Color colorFondo, {bool obligatorio = true}) {
+
   return TextFormField(
     controller: controller,
     keyboardType: TextInputType.number,
     style: TextStyle(fontWeight: FontWeight.bold),
     decoration: _inputDeco(label, colorFondo),
 
-    validator: validarNumeroObligatorio  
+    validator: (value) => validarNumeroObligatorio(value, obligatorio: obligatorio)
 
   );
 }
@@ -92,8 +109,20 @@ Widget campo(String label, TextEditingController controller,Color colorFondo, {b
   );
 }
 
+Widget campoDouble(String label, TextEditingController controller, Color colorFondo, {bool obligatorio = false}) {
+
+  return TextFormField(
+    controller: controller,
+    keyboardType: TextInputType.numberWithOptions(decimal: true),
+    style: TextStyle(fontWeight: FontWeight.bold),
+    decoration: _inputDeco(label, colorFondo),
+    validator: (value) => validarDouble(value, obligatorio: obligatorio),
+  );
+}
+
 
 InputDecoration _inputDeco(String label, Color color, {bool hint = false}) {
+
   return InputDecoration(
     labelText: hint ? null : label,
     hintText: hint ? label : null,

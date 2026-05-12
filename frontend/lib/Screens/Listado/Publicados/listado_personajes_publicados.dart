@@ -4,14 +4,14 @@ import 'package:heroforge/ViewModels/PersonajeViewModel.dart';
 import 'package:heroforge/models/personaje.dart';
 import 'package:provider/provider.dart';
 
-class Listadopersonajes extends StatefulWidget {
-  const Listadopersonajes({super.key});
+class ListadoPersonajesPublicados extends StatefulWidget {
+  const ListadoPersonajesPublicados({super.key});
 
   @override
-  State<Listadopersonajes> createState() => _ListadopersonajesState();
+  State<ListadoPersonajesPublicados> createState() => _ListadopersonajesState();
 }
 
-class _ListadopersonajesState extends State<Listadopersonajes> {
+class _ListadopersonajesState extends State<ListadoPersonajesPublicados> {
 
   late PersonajeViewModel viewModel;
 
@@ -20,6 +20,8 @@ class _ListadopersonajesState extends State<Listadopersonajes> {
 
     super.initState();
     viewModel = Provider.of<PersonajeViewModel>(context, listen: false);
+
+    viewModel.getPersonajesPublicados(context);
   }
 
   @override
@@ -29,26 +31,27 @@ class _ListadopersonajesState extends State<Listadopersonajes> {
       padding: const EdgeInsets.all(20.0),
       child: ListenableBuilder(
       
-        listenable: viewModel.directorio,
+        listenable: viewModel.directorioPersonajesPublicados,
       
         builder: (context, _) {
       
           return ListView.builder(
+            itemCount: viewModel.directorioPersonajesPublicados.personajes.length,
       
             itemBuilder: (context, index) {
-              Personaje personaje = viewModel.directorio.personajes[index];
+              Personaje personaje = viewModel.directorioPersonajesPublicados.personajes[index];
       
               return ListenableBuilder(
       
                 listenable: personaje,
                 builder: (context, child) {
       
-                  return Personajetile(personaje: personaje, modificable: true,);
+                  return Personajetile(personaje: personaje, modificable: false,);
                   
                 },
               );
             },
-            itemCount: viewModel.numPersonajes,
+
           );
         },
       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:heroforge/Components/user_pop.dart';
 import 'package:heroforge/Config/app_config.dart';
+import 'package:heroforge/Screens/Listado/Publicados/listado_personajes_publicados.dart';
 import 'package:heroforge/Screens/Listado/listado_personajes.dart';
 import 'package:heroforge/Screens/Extra/dados.dart';
 import 'package:heroforge/ViewModels/PersonajeViewModel.dart';
@@ -35,6 +36,7 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> paginas = [
     Dados(), // índice 0
     Listadopersonajes(),                             // índice 1
+    ListadoPersonajesPublicados()
   ];
 
     return Scaffold(
@@ -87,6 +89,7 @@ class _HomePageState extends State<HomePage> {
 
           BottomNavigationBarItem(icon: Icon(Icons.casino), label: "Dados", ),
           BottomNavigationBarItem(icon: Icon(Icons.list), label: "Personajes"),
+          BottomNavigationBarItem(icon: Icon(Icons.publish), label: "Publicados"),
 
         ],
 

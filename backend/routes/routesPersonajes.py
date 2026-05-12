@@ -6,6 +6,13 @@ from sqlalchemy.orm import Session
 import models.User as User, database.session_heroForge as session_heroForge, services.security as security
 import requests
 from services.security import get_payload
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+IA_KEY = os.getenv("IA_KEY") 
+
 
 
 router = APIRouter()
@@ -46,31 +53,65 @@ def getDatoCurioso():
 
     
 
-    try:
+   
         #No se por que no sirven estas Api, estan muertas ¿?
         #url = "http://numbersapi.com/random/trivia?json"
         #url = f"http://numbersapi.com/{random.randint(1, 1000)}/trivia"
 
+
+        #Por si una de las dos falla, a veces me falla una a veces la otra        
+    try:
+        url = "https://zenquotes.io/api/random"
+        response = requests.get(url, timeout=5)
+               
+        if response.status_code == 200:
+            data = response.json()
+            
+            return {
+                "frase": data[0].get("q"),  #[{"q": "frase, "a": "autor"}]
+            } 
+    except Exception:
+        pass     
+    
+    try:
         url = "https://uselessfacts.jsph.pl/random.json?language=en"
         response = requests.get(url, timeout=5)
 
+        if response.status_code == 200:
+            data = response.json()
+            return {"frase": data.get("text")}
         
+    except Exception:
 
-        response = requests.get(f"https://zenquotes.io/api/random", timeout=5)
+        raise HTTPException(status_code=500, detail="Ambas APIs fallaron")
+
+   
+    raise HTTPException(status_code=500, detail="Error las dos APIS fallaron ")
+
+@router.post("/IA/historia")
+def getAyudaHistoria(data : dict ):
+
+    historia = data.get("historia")
+
+   # url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={IA_KEY}"
+    #url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={IA_KEY}"
+    url = "https://api.groq.com/openai/v1/chat/completions"
+
+    response = requests.post(url,
+    headers={"Authorization": f"Bearer {IA_KEY}"},
+    json={
+        #"model": "llama3-8b-8192",
+        "model": "llama-3.3-70b-versatile",
+        "messages": [{"role": "user", "content": f"Soy un personaje de D&D. Mi historia: {historia}. Continúa con un párrafo más."}]
+    }
+)
+
+    data = response.json()
+    print(data)
+
+    return {"historia": data["choices"][0]["message"]["content"]}
 
 
-        if response.status_code != 200:
-            raise HTTPException(status_code=500, detail="Error al obtener dato el dato curiosos de la API ")
-        
-        data = response.json()
-
-        #[{"q": "frase, "a": "autor"}]
-        return {
-            "frase": data[0].get("q"),   
-        }        
-
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
     
 @router.post("/Personajes/add")
 def addPersonaje(data : dict, db : Session = Depends(get_db_personajes), payload = Depends(get_payload)):
@@ -150,7 +191,7 @@ def editPersonaje(data : dict, db : Session = Depends(get_db_personajes), payloa
     personaje.nivel  = data.get("nivel", personaje.nivel)
     personaje.experiencia = data.get("experiencia", personaje.experiencia)
     personaje.historia = data.get("historia", personaje.historia)
-    personaje.publicado = data.get("publicado", personaje.publicado)
+  #  personaje.publicado = data.get("publicado", personaje.publicado)
     personaje.fuerza = data.get("fuerza", personaje.fuerza)
     personaje.destreza = data.get("destreza", personaje.destreza)
 
@@ -218,6 +259,50 @@ def removePersonaje(data : dict, db : Session = Depends(get_db_personajes), payl
 
 
 
+@router.get("/Personajes/Publicados/get")
+def getPersonajesPublicados(db : Session = Depends(get_db_personajes), payload = Depends(get_payload)):  
+
+    
+    email = payload.get("sub")
+    user = db.query(User.User).filter(User.User.email == email).first()
+
+    if not user:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")    
+
+    personajes = db.query(Personaje).filter(Personaje.publicado == True).all()
+    
+    return personajes
+
+
+@router.post("/Personajes/Publicados/add")
+def addPersonajesPublicados(data : dict, db : Session = Depends(get_db_personajes), payload = Depends(get_payload)):
+
+
+    
+    email = payload.get("sub")
+    user = db.query(User.User).filter(User.User.email == email).first()
+
+    if not user:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")  
+    
+    personaje = db.query(Personaje).filter(Personaje.id == data.get("id"), Personaje.id_usuario == user.id).first()
+
+    if not personaje:
+        raise HTTPException(status_code=404, detail="Personaje no encontrado")
+   
+
+    if personaje.publicado: # type: ignore
+         raise HTTPException(status_code=400, detail="El personaje ya está publicado")
+    
+    personaje.publicado = True # type: ignore
+    db.commit()
+
+    return {"ok": True}
+
+
+    
+
+    
 
 
 

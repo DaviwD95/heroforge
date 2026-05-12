@@ -48,7 +48,7 @@ class _MyAppState extends State<MyApp> {
           
           create: (_) {
 
-            final vm = PersonajeViewModel(DirectorioPersonajes());
+            final vm = PersonajeViewModel(DirectorioPersonajes(), DirectorioPersonajes());
            // vm.init(context); no puede recibir el context, por eso lo pondre desde el homepage 
 
             return vm;

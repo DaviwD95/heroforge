@@ -19,11 +19,13 @@ class PersonajeViewModel extends ChangeNotifier {
 
   DirectorioPersonajes directorio;
 
+  DirectorioPersonajes directorioPersonajesPublicados;
+
   int get numPersonajes=> directorio.personajes.length; 
 
   //Si es andriid usa localHost (porque no tengo domain, si no pues el movil que es mi direccion IP )
 
-  PersonajeViewModel(this.directorio);
+  PersonajeViewModel(this.directorio, this.directorioPersonajesPublicados);
 
 
 
@@ -184,6 +186,90 @@ class PersonajeViewModel extends ChangeNotifier {
       return false;
     }
 
+  }
+
+  Future<void> getPersonajesPublicados(BuildContext context) async {
+
+    final token = Provider.of<AuthProvider>(context, listen: false).token;
+
+    final response = await http.get(
+
+      Uri.parse("$baseUrl/Personajes/Publicados/get"),
+      headers: {"Content-Type": "application/json",
+              "Authorization": "Bearer $token",},
+                  
+      );
+
+    if(response.statusCode == 200)
+     {
+
+      final List data = jsonDecode(response.body);
+
+      directorioPersonajesPublicados.setPersonajes(data.map((e) => Personaje.fromJson(e)).toList(),);        
+   
+
+     }
+    
+    
+  }
+
+
+  Future<bool?> publicarPersonaje(BuildContext context, Personaje personaje) async {
+
+    final token = Provider.of<AuthProvider>(context, listen: false).token;
+
+    final response = await http.post(Uri.parse("$baseUrl/Personajes/Publicados/add"),
+      
+     headers: {"Content-Type": "application/json",
+              "Authorization": "Bearer $token",
+              },
+     body: jsonEncode({"id": personaje.id}),
+    );
+
+    if(response.statusCode == 200)
+     {
+
+      
+      directorioPersonajesPublicados.agregar(personaje);
+      return true;
+   
+
+     }else
+     {
+
+      return false;
+     }    
+    
+  }
+
+  Future<String?> getAyudaHistoriaIA(BuildContext context, String historia) async {
+
+    final token = Provider.of<AuthProvider>(context, listen: false).token;
+
+    final response = await http.post(Uri.parse("$baseUrl/IA/historia"),
+      
+     headers: {"Content-Type": "application/json",
+              "Authorization": "Bearer $token",
+              },
+     body: jsonEncode({"historia": historia}),
+    );
+
+    if(response.statusCode == 200)
+     {
+      
+      final data = jsonDecode(response.body);
+
+      String historiaModificada = data["historia"];
+
+      return historiaModificada;   
+
+     }else
+     {
+      return null;
+
+     }
+    
+    
   }
 
 }

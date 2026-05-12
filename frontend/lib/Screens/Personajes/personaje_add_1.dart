@@ -1,8 +1,12 @@
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:heroforge/Components/formulario_helpers.dart';
 import 'package:heroforge/Config/app_config.dart';
+import 'package:heroforge/ViewModels/PersonajeViewModel.dart';
 import 'package:heroforge/models/personaje.dart';
+import 'package:provider/provider.dart';
 
 class PersonajeAdd1 extends StatefulWidget {
   final Personaje personaje;
@@ -13,6 +17,8 @@ class PersonajeAdd1 extends StatefulWidget {
 }
 
 class _PersonajeAddState extends State<PersonajeAdd1> {
+
+  late PersonajeViewModel vm;
 
   late TextEditingController nombreController;
  // late TextEditingController claseController;
@@ -64,6 +70,7 @@ class _PersonajeAddState extends State<PersonajeAdd1> {
   void initState() {
     super.initState();  
     
+    vm = Provider.of<PersonajeViewModel>(context, listen: false);
 
     nombreController = TextEditingController(text: widget.personaje.nombre ?? "");
 
@@ -167,6 +174,9 @@ class _PersonajeAddState extends State<PersonajeAdd1> {
           padding: EdgeInsets.all(16.0),
           children: [
 
+            
+            Divider(color: Colors.blue, thickness: 6),
+
             Text("Básico", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),            
       
             Divider(color: Colors.blue, thickness: 6),
@@ -252,6 +262,12 @@ class _PersonajeAddState extends State<PersonajeAdd1> {
                           borderSide:  BorderSide(color: Color(0xFF6C63FF), width: 2),
                           ),
 
+                        suffixIcon: IconButton(
+                          icon: Icon(Icons.auto_awesome, color: Colors.deepPurple),
+                          tooltip: "Pedir ayuda...",
+                          onPressed: pedirAyudaHistoria,
+                        ),
+
                         label: Text("Historia"),
                       ),
                     ),
@@ -317,6 +333,9 @@ class _PersonajeAddState extends State<PersonajeAdd1> {
 
             //Datos Fisicos
 
+            
+            Divider(color: Colors.red, thickness: 6),
+
             Text("Aspecto Físico", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),            
       
             Divider(color: Colors.red, thickness: 6),
@@ -326,17 +345,17 @@ class _PersonajeAddState extends State<PersonajeAdd1> {
             Row(
               children: [
                 //Edad
-                Expanded(child: campo("Edad", edadController, colorAspectoFisico,obligatorio: false)),
+                Expanded(child: campoNumero("Edad", edadController, colorAspectoFisico,obligatorio: false)),
 
                 SizedBox(width: 15),
 
                 //Altura
-                Expanded(child: campo("Altura", alturaController, colorAspectoFisico,obligatorio: false)),
+                Expanded(child: campoDouble("Altura (metros)", alturaController, colorAspectoFisico,obligatorio: false)),
 
                 SizedBox(width: 15),
 
                 //peso
-                Expanded(child: campo("Peso", pesoController, colorAspectoFisico,obligatorio: false))
+                Expanded(child: campoDouble("Peso (kg)", pesoController, colorAspectoFisico,obligatorio: false))
 
                 ],
             ),
@@ -364,9 +383,11 @@ class _PersonajeAddState extends State<PersonajeAdd1> {
 
              SizedBox(height: 20),
 
+             Divider(color: Colors.green, thickness: 6),
+
              Text("Personalidad", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),            
       
-             Divider(color: Colors.orange, thickness: 6),
+             Divider(color: Colors.green, thickness: 6),
 
              SizedBox(height: 20),
 
@@ -578,6 +599,39 @@ final _infoTransfondo = {
   },
 
 };
+
+
+void pedirAyudaHistoria() async {
+
+  String? historiaModificada = await vm.getAyudaHistoriaIA(context, historiaController.text);
+
+  if (historiaModificada != null)
+  {
+
+    historiaController.text = historiaModificada;
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Groq logro acudir a tu rescate",),),);
+                                 
+  }else
+  { 
+    Random random = Random();
+
+    int numero = random.nextInt(2);
+    if(numero == 1)
+    {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Parece que Groq ha caido en comnbate....",),),); 
+    }else
+    {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Pero nadie vino.....",),),); 
+    }
+                            
+
+
+  }
+
+
+
+
+}
 
 
 

@@ -52,6 +52,8 @@ class _PersonajeAdd3State extends State<PersonajeAdd3> {
         child: ListView(
         
           children: [
+
+            Divider(color: Colors.blue, thickness: 6),
         
             Text("Habilidades Secundarias, Tiradas de Salvación y Bono Competencia", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),            
               
@@ -79,12 +81,12 @@ class _PersonajeAdd3State extends State<PersonajeAdd3> {
 
             SizedBox(height: 20,), 
 
-            Divider(color: Colors.blue, thickness: 6),
+            Divider(color: Colors.red, thickness: 6),
 
 
             Text("Habilidades Secundarias", style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),            
               
-            Divider(color: Colors.blue, thickness: 6),
+            Divider(color: Colors.red, thickness: 6),
 
             SizedBox(height: 20,), 
             
@@ -138,12 +140,12 @@ class _PersonajeAdd3State extends State<PersonajeAdd3> {
             SizedBox(height: 20),
 
             
-            Divider(color: Colors.blue, thickness: 6),
+            Divider(color: Colors.green, thickness: 6),
               
 
             Text("Tiradas de Salvación", style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),            
               
-            Divider(color: Colors.blue, thickness: 6),     
+            Divider(color: Colors.green, thickness: 6),     
 
             SizedBox(height: 30),
 
