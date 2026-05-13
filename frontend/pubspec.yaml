@@ -35,6 +35,7 @@ dependencies:
   image_picker: ^1.0.0
   font_awesome_flutter: ^10.7.0
   translator: ^1.0.4+1
+  audioplayers: ^6.0.0
   
 
   # The following adds the Cupertino Icons font to your application.
@@ -55,6 +56,12 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
+  flutter_launcher_icons: ^0.14.1
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/Yo/HeroForgeIcono.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -84,6 +91,17 @@ flutter:
     - assets/dados/d100.png
 
     - assets/Yo/mimis.jpg
+
+
+
+    - assets/razas/humano.png
+    - assets/razas/elfo.png
+    - assets/razas/mediano.png
+    - assets/razas/enano.png
+
+
+    - assets/dados/sonidoDado1.mp3    
+    - assets/dados/sonidoDado3.mp3
 
 
   # To add assets to your application, add an assets section, like this:

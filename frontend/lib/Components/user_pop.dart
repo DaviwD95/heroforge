@@ -20,7 +20,7 @@ class UserPop extends StatelessWidget {
     return PopupMenuButton(
       
     
-      icon:  CircleAvatar(child:  ClipOval(child:  _buildImage(user, context),),),
+      icon:  CircleAvatar(backgroundColor: Colors.transparent, child:  ClipOval(child:  _buildImage(user, context),),),
       
       itemBuilder:(context)
       {

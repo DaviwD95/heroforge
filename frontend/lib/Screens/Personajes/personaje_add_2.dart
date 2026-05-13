@@ -529,62 +529,7 @@ class _PersonajeAdd2State extends State<PersonajeAdd2> {
         ],
       ),
           );
-  } 
-
-  
-
-
-
- Widget campoIcono(IconData icono, Color colorIcono, TextEditingController? controller) 
- {
-  return Expanded(
-    child: Column(
-      children: [
-        Stack(
-        
-          alignment: Alignment.center,
-          children: [
-        
-            Icon(icono, color: colorIcono, size: 120),  // el corazon/escudo grande de fondo
-        
-            SizedBox(
-              width: 40,
-              child: TextFormField(
-               // validator: validarNumeroObligatorio,
-                controller: controller,
-                textAlign: TextAlign.center,          
-                keyboardType: TextInputType.number, 
-                
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                  color: Colors.white,
-                ),
-                decoration: InputDecoration(
-                  border: InputBorder.none,  // sin borde, que no se vea el campo
-                  isDense: true,
-                ),
-              ),
-            ),
-          ],
-        ),
-
-      //El campo de error en lo iconos es de esta forma, ya que si no no se apreciara bien y queudara feo
-
-      FormField<void>(
-        validator: (_) {
-          
-          final val = controller?.text ?? '';
-          final n = int.tryParse(val);
-          if (val.isEmpty) return 'Obligatorio';
-          if (n == null) return 'Solo números';
-          return null;
-        },
-        builder: (state) => state.hasError ? Text(state.errorText!,style: TextStyle(color: Colors.red, fontSize: 11),) : SizedBox.shrink(), ),
-      ],
-    ),
-  );
- }
+  }  
  
   int lanzarDado() {
 

@@ -17,9 +17,9 @@ class Personaje extends ChangeNotifier {
 
   String? nombreJugador;
   String? historia;
-  int?     nivel;
-  int?     experiencia;
-  bool?    publicado;
+  int? nivel;
+  int? experiencia;
+  bool? publicado;
   DateTime? fechaCreacion; //auto 
 
   // Stats

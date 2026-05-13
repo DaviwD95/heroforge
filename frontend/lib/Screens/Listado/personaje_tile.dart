@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:heroforge/Components/formulario_helpers.dart';
+import 'package:heroforge/Screens/Personajes/detalles_personaje.dart';
 import 'package:heroforge/ViewModels/PersonajeViewModel.dart';
 import 'package:heroforge/models/personaje.dart';
 import 'package:provider/provider.dart';
@@ -38,6 +40,10 @@ class _PersonajetileState extends State<Personajetile> {
         child: InkWell(
 
           onTap: () {
+
+             Navigator.of(context).push(MaterialPageRoute(builder: (context) => DetallesPersoonaje(personaje: widget.personaje),),);
+    
+            
 
 
             
@@ -231,7 +237,7 @@ class _PersonajetileState extends State<Personajetile> {
                             
                             Text("${widget.personaje.clase ?? ""} -  ${widget.personaje.alineamiento ?? ""}",  style:  TextStyle(fontSize: 15)),
           
-                             SizedBox(height: 7), 
+                            SizedBox(height: 7), 
           
                            // Text("Fuerza: ${widget.personaje.fuerza} Destreza "),
                             Wrap(
@@ -282,42 +288,7 @@ class _PersonajetileState extends State<Personajetile> {
   }
 
 
-  Color? colorSegunClase(Personaje personaje)
-  {
-
-    if(personaje.claseBase == "Guerrero")
-    {
-      return Colors.red[400];
-
-    }else if(personaje.claseBase == "Mago"){
-
-      return Colors.blue;      
-
-    }else if(personaje.clase == "Clerigo"){
-
-      return Colors.amber[300];      
-    }
-    else if(personaje.claseBase == "Picaro"){
-
-      return Colors.brown;      
-
-    }else if(personaje.claseBase == "Artificiero"){
-
-      return Colors.green;      
-    }
-  }
-
-  String imagenSegunClase(String? clase) {
-      
-      const imagenes = {
-        'Guerrero':    'assets/clases/guerrero.png',
-        'Mago':        'assets/clases/mago.png',
-        'Clerigo':     'assets/clases/clerigo.png',
-        'Picaro':      'assets/clases/picaro.png',
-        'Artificiero': 'assets/clases/artificiero.png',
-        };
-      return imagenes[clase] ?? 'assets/clases/default.png';
-  }
+  
 
   Widget botonDialog(IconData icon, String label,  Color? color, VoidCallback onTap) {
     

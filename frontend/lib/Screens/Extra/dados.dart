@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 
 import 'dart:math';
@@ -17,12 +18,13 @@ class Dados extends StatefulWidget {
 }
 
 class _DadosState extends State<Dados> {
-  
 
+    Random random = Random();
+
+    final player = AudioPlayer();
 
     final Dadosviewmodel _dadosviewmodel = Dadosviewmodel();
-    String? frase;
-    
+    String? frase;    
 
     Timer? _timer;
 
@@ -404,6 +406,17 @@ class _DadosState extends State<Dados> {
   }
 
   void tirarDado(int caras) {
+
+    int numero = random.nextInt(2);
+
+    if(numero == 0)
+    {
+      player.play(AssetSource('dados/sonidoDado1.mp3'));
+    }else
+    {
+      player.play(AssetSource('dados/sonidoDado3.mp3'));
+    }
+
     //Primero calculamos el resultado real
     final resultadoFinal = sumarDados(caras);
     int ticks = 0;
@@ -430,7 +443,7 @@ class _DadosState extends State<Dados> {
             0,
             "${cantidad}d$caras + $modificador = $resultadoActual",
           );
-          if (historial.length > 10) historial.removeLast();
+          if (historial.length > 5) historial.removeLast();
         });
       }
     });

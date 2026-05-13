@@ -88,8 +88,7 @@ class _PersonajeAdd3State extends State<PersonajeAdd3> {
               
             Divider(color: Colors.red, thickness: 6),
 
-            SizedBox(height: 20,), 
-            
+            SizedBox(height: 20,),        
                    
         
             Row(

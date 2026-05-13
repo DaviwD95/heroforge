@@ -248,7 +248,7 @@ class _PersonajeAddState extends State<PersonajeAdd1> {
                       expands: true,
                       maxLines: null,
                       minLines: null, 
-                      style: const TextStyle(fontWeight: FontWeight.bold),                     
+                      style: TextStyle(fontWeight: FontWeight.bold),                     
                       controller: historiaController,       
                       textAlignVertical: TextAlignVertical.top,             
                     
@@ -293,10 +293,10 @@ class _PersonajeAddState extends State<PersonajeAdd1> {
                             Expanded(
                               child: dropDown(
                                 "Alineamiento",alineamientoString,
-                              ["Legal Bueno", "Neutral Bueno", "Caótico Bueno",
-                              "Legal Neutral", "Neutral", "Caótico Neutral",
-                              "Legal Malvado", "Neutral Malvado", "Caótico Malvado"],
-                              (value) { setState(() => alineamientoString = value); },
+                                ["Legal Bueno", "Neutral Bueno", "Caótico Bueno",
+                                "Legal Neutral", "Neutral", "Caótico Neutral",
+                                "Legal Malvado", "Neutral Malvado", "Caótico Malvado"],
+                                (value) { setState(() => alineamientoString = value); },
                               ),
                             ),
 
@@ -404,7 +404,7 @@ class _PersonajeAddState extends State<PersonajeAdd1> {
                     child: TextFormField(                      
                       expands: true,
                       maxLines: null,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
+                      style:TextStyle(fontWeight: FontWeight.bold),
                       minLines: null,                      
                       controller: rasgosController,       
                       textAlignVertical: TextAlignVertical.top,             
@@ -426,7 +426,7 @@ class _PersonajeAddState extends State<PersonajeAdd1> {
                       expands: true,
                       maxLines: null,
                       minLines: null,     
-                      style: const TextStyle(fontWeight: FontWeight.bold),                 
+                      style: TextStyle(fontWeight: FontWeight.bold),                 
                       controller: idealesController,       
                       textAlignVertical: TextAlignVertical.top,             
                     
@@ -447,7 +447,7 @@ class _PersonajeAddState extends State<PersonajeAdd1> {
                       expands: true,
                       maxLines: null,
                       minLines: null,        
-                      style: const TextStyle(fontWeight: FontWeight.bold),              
+                      style: TextStyle(fontWeight: FontWeight.bold),              
                       controller: vinculosController,       
                       textAlignVertical: TextAlignVertical.top,             
                     
@@ -465,7 +465,7 @@ class _PersonajeAddState extends State<PersonajeAdd1> {
                   Expanded(
                     flex: 1,
                     child: TextFormField(
-                      style: const TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(fontWeight: FontWeight.bold),
                       expands: true,
                       maxLines: null,
                       minLines: null,                      
@@ -483,22 +483,8 @@ class _PersonajeAddState extends State<PersonajeAdd1> {
                   
                 ],
                ),
-             )
-
-
-            
-      
-            
-      
-      
-      
-      
-          ],
-      
-      
-      
-      
-      
+             )      
+          ],      
         )),
     );
   }
