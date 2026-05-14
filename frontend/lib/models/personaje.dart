@@ -235,6 +235,26 @@ class Personaje extends ChangeNotifier {
   int get modSabiduria    => modificador(sabiduria);
   int get modCarisma      => modificador(carisma);
 
+  int get iniciativa => modDestreza;
+
+
+  int? get velocidad {
+
+    if(raza == "Enano" || raza == "Mediano")
+    {
+      return 25; //Esto es en pies, son 7.5 metros
+    }else if(raza == "Humano" || raza == "Elfo")
+    {
+      return 30; //Esto es en pies, son 9
+    }else
+    {
+      return null;
+    }
+    
+    
+   
+}
+
   //Calcular el modHabilidad(incluso con el  bono comp)
 
   int modHabilidad(String hab) {
@@ -263,7 +283,7 @@ class Personaje extends ChangeNotifier {
      'Clerigo':     ['historia', 'medicina', 'persuasion', 'religion', 'perspicacia', 'intimidacion'],
    };
 
-    final tieneComp = (compClase[claseBase] ?? []).contains(hab);
+    bool tieneComp = (compClase[claseBase] ?? []).contains(hab);
 
     return (stats[hab] ?? 0) + (tieneComp ? bonusCompetencia : 0);
   }
@@ -271,12 +291,14 @@ class Personaje extends ChangeNotifier {
   bool tieneCompHabilidad(String hab) {
     
     final compClase = {
+
      'Mago':        ['C.arcano', 'historia', 'investigacion', 'medicina', 'religion', 'perspicacia'],
      'Artificiero': ['C.arcano', 'historia', 'investigacion', 'medicina', 'naturaleza', 'percepcion'],
      'Guerrero':    ['atletismo', 'intimidacion', 'supervivencia', 'percepcion', 'historia', 'acrobacias'],
      'Picaro':      ['acrobacias', 'engano', 'perspicacia', 'intimidacion', 'investigacion', 'sigilo', 'juegoDeManos', 'persuasion'],
      'Clerigo':     ['historia', 'medicina', 'persuasion', 'religion', 'perspicacia', 'intimidacion'],
     };
+
     return (compClase[claseBase] ?? []).contains(hab);
 
   }
@@ -286,6 +308,7 @@ class Personaje extends ChangeNotifier {
   int modSalvacion(String stat) {
 
     final compSalv = {
+
       'Guerrero': ['FUE', 'CON'],
       'Picaro': ['DES', 'INT'],
       'Clerigo': ['SAB', 'CAR'],
@@ -300,6 +323,7 @@ class Personaje extends ChangeNotifier {
       'INT': modInteligencia,
       'SAB': modSabiduria,
       'CAR': modCarisma,
+
     };
 
     final base = bases[stat] ?? 0;
@@ -312,11 +336,13 @@ class Personaje extends ChangeNotifier {
   bool tieneCompSalvacion(String stat) {
 
     final compSalv = {
+
       'Guerrero': ['FUE', 'CON'],
       'Picaro': ['DES', 'INT'],
       'Clerigo': ['SAB', 'CAR'],
       'Mago': ['INT', 'SAB'],
       'Artificiero': ['CON', 'INT'],
+
     };
     return (compSalv[claseBase] ?? []).contains(stat);
 

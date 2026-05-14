@@ -49,111 +49,116 @@ class _LoginsignState extends State<Sign> {
             key: _formKey,
 
             child: Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-
+              child: ListView(
+                padding: EdgeInsets.only(top: 80),
                 children: [
-                  Text(
-                    "Sign In",
-                    style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.orange,
-                    ),
-                  ),
-
-                  SizedBox(height: 20),
-
-                  SizedBox(
-                    width: 300,
-                    child: TextFormField(
-                      controller: gmailController,
-                      validator: _validarEmail,
-
-                      decoration: InputDecoration(
-                        labelText: "Gmail",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  SizedBox(height: 20),
-
-                  SizedBox(
-                    width: 300,
-                    child: TextFormField(
-                      controller: passwordController,
-                      validator: _validarCampoObligatorio,
-
-                      decoration: InputDecoration(
-                        labelText: "Contraseña",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(height: 30),
-
-                  SizedBox(
-                    width: 300,
-                    child: TextFormField(
-                      controller: nombreController,
-                      validator: _validarCampoObligatorio,
-
-                      decoration: InputDecoration(
-                        labelText: "Nombre",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(height: 30),
-
-                  /// Boton para Crearse la cuenta 
-                  SizedBox(
-                    width: 300,
-                    height: 45,
-                    child: ElevatedButton(
-                      onPressed: guardarCambios,
-
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.orange,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-
-                      child: const Text(
-                        "Crear cuenta",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ),                 
-
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
                   
-                  const SizedBox(height: 30),
-
-                  TextButton(
-                    onPressed: () {Navigator.of(context).push(MaterialPageRoute(builder: (context) => Login()),);},
-                    child: Text("¿Ya tienes una cuenta? Inicia sesion pulsando aqui",
-                    
-                    style: TextStyle(
+                    children: [
+                      Text(
+                        "Sign In",
+                        style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.orange,
+                        ),
+                      ),
+                  
+                      SizedBox(height: 20),
+                  
+                      SizedBox(
+                        width: 300,
+                        child: TextFormField(
+                          controller: gmailController,
+                          validator: _validarEmail,
+                  
+                          decoration: InputDecoration(
+                            labelText: "Gmail",
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                        ),
+                      ),
+                  
+                      SizedBox(height: 20),
+                  
+                      SizedBox(
+                        width: 300,
+                        child: TextFormField(
+                          controller: passwordController,
+                          validator: _validarCampoObligatorio,
+                  
+                          decoration: InputDecoration(
+                            labelText: "Contraseña",
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                        ),
+                      ),
+                  
+                      const SizedBox(height: 30),
+                  
+                      SizedBox(
+                        width: 300,
+                        child: TextFormField(
+                          controller: nombreController,
+                          validator: _validarCampoObligatorio,
+                  
+                          decoration: InputDecoration(
+                            labelText: "Nombre",
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                        ),
+                      ),
+                  
+                      const SizedBox(height: 30),
+                  
+                      /// Boton para Crearse la cuenta 
+                      SizedBox(
+                        width: 300,
+                        height: 45,
+                        child: ElevatedButton(
+                          onPressed: guardarCambios,
+                  
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.orange,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                  
+                          child: const Text(
+                            "Crear cuenta",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),                 
+                  
                       
-                      fontSize: 10,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.lightBlue,
-                    ),),                
-                    
-                  )
-
-
-
+                      const SizedBox(height: 30),
+                  
+                      TextButton(
+                        onPressed: () {Navigator.of(context).push(MaterialPageRoute(builder: (context) => Login()),);},
+                        child: Text("¿Ya tienes una cuenta? Inicia sesion pulsando aqui",
+                        
+                        style: TextStyle(
+                          
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.lightBlue,
+                        ),),                
+                        
+                      )
+                  
+                  
+                  
+                    ],
+                  ),
                 ],
               ),
             ),

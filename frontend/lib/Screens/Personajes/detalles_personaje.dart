@@ -87,11 +87,11 @@ class DetallesPersoonaje extends StatelessWidget {
 
                 SizedBox(width: 16),
                 
-                campoIcono(Icons.favorite, Colors.red, TextEditingController(text: personaje.puntosGolpeMax.toString()), size: 80),
+                Flexible(child: campoIcono(Icons.favorite, Colors.red, TextEditingController(text: personaje.puntosGolpeMax.toString()), size: 80, readOnly: true)),
 
                 SizedBox(width: 16),
 
-                campoIcono(Icons.shield_sharp, Colors.grey, TextEditingController(text: personaje.claseArmadura.toString()), size: 80),  
+                Flexible(child: campoIcono(Icons.shield_sharp, Colors.grey, TextEditingController(text: personaje.claseArmadura.toString(),), readOnly: true, size: 80)),  
                
               ],
             ),
@@ -287,6 +287,8 @@ class DetallesPersoonaje extends StatelessWidget {
                  ),
                ),
 
+               SizedBox(height: 15),
+
 
                SizedBox(
                 width: double.infinity, // todo lo ancho que pueda
@@ -316,18 +318,110 @@ class DetallesPersoonaje extends StatelessWidget {
                 
               ],
             ),
+            SizedBox(height: 30),
+
+            //Salvacion + Iniciativa + Velocidad +  Bonificador Comp
+
+            Divider(color: Colors.blue, thickness: 6),
+
+            Text("Salvacion + Extras", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),            
+      
+            Divider(color: Colors.blue, thickness: 6),
+
+            SizedBox(height: 20),
+
+            Text("Tu bono de competencia actual: +${personaje.bonusCompetencia}", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.deepPurple),),      
+
+            SizedBox(height: 20,),
+            
+
+            Row(
+              children: [
+
+                Flexible(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+
+                      campo("Iniciativa", TextEditingController(text: "+${personaje.iniciativa.toString()}"), colorBasico, readOnly: true),
+
+                      SizedBox(height: 10),
+                  
+                      Image.asset('assets/Yo/iniciativa.png', width: 80, height: 85),
+                      
+                    ],
+                  ),
+                ),
+
+                SizedBox(width: 10,),
+
+                Flexible(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+
+                      campo("Velocidad", TextEditingController(text: personaje.velocidad.toString()), colorBasico, readOnly: true),
+
+                      SizedBox(height: 10),
+                  
+                      Image.asset('assets/Yo/velocidad.png', width: 90, height: 90),
+                      
+                    ],
+                  ),
+                ),                          
+
+              ],
+            ),
+
+            SizedBox(height: 20),
+
+            Row(
+              children: [
+
+                Flexible(
+                  child: Column(
+                    children: [
+                      campoHabilidad("FUE", personaje),
+                      campoHabilidad("DES", personaje),
+                      campoHabilidad("CON", personaje),
+                    ],
+                  ),
+                ),
+
+                SizedBox(width: 15),
+
+                Flexible(
+                  child: Column(
+                    children: [
+                      campoHabilidad("INT", personaje),
+                      campoHabilidad("SAB", personaje),
+                      campoHabilidad("CAR", personaje),
+                    ],
+              ),
+            ),
+
+             ],
+            ),           
+
 
             SizedBox(height: 30),
 
             //Stats main
+
+            Divider(color: Colors.red, thickness: 6),
+
+            Text("Estadísticas", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),            
+      
+            Divider(color: Colors.red, thickness: 6),
+
+            SizedBox(height: 30),
 
             Row(
               children: [
 
                 Expanded(child: campoStatSimple("Fuerza",       personaje.fuerza)),
                 Expanded(child: campoStatSimple("Destreza",     personaje.destreza)),
-                Expanded(child: campoStatSimple("Constitución", personaje.constitucion)),
-
+                
               ],
             ),
 
@@ -336,6 +430,14 @@ class DetallesPersoonaje extends StatelessWidget {
 
                 Expanded(child: campoStatSimple("Inteligencia", personaje.inteligencia)),
                 Expanded(child: campoStatSimple("Sabiduría",    personaje.sabiduria)),
+                
+
+              ],
+            ),
+
+            Row(
+              children: [
+                Expanded(child: campoStatSimple("Constitución", personaje.constitucion)),
                 Expanded(child: campoStatSimple("Carisma",      personaje.carisma)),
 
               ],
@@ -359,17 +461,17 @@ class DetallesPersoonaje extends StatelessWidget {
                       child: Column(
                         children: 
                         [
-                          campoHabilidadSimple('acrobacias',    personaje.habilidades['acrobacias']    ?? 0),
-                          campoHabilidadSimple('atletismo',     personaje.habilidades['atletismo']     ?? 0),
-                          campoHabilidadSimple('C.arcano',      personaje.habilidades['C.arcano']      ?? 0),
+                          campoHabilidad('acrobacias', personaje),
+                          campoHabilidad('atletismo', personaje),
+                          campoHabilidad('C.arcano',  personaje),
                       
-                          campoHabilidadSimple('engano',        personaje.habilidades['engano']        ?? 0),
-                          campoHabilidadSimple('historia',      personaje.habilidades['historia']      ?? 0),
-                          campoHabilidadSimple('interpretacion',personaje.habilidades['interpretacion']?? 0),
+                          campoHabilidad('engaño', personaje),
+                          campoHabilidad('historia', personaje),
+                          campoHabilidad('interpretacion', personaje),
                       
-                          campoHabilidadSimple('intimidacion',  personaje.habilidades['intimidacion']  ?? 0),
-                          campoHabilidadSimple('investigacion', personaje.habilidades['investigacion'] ?? 0),
-                          campoHabilidadSimple('juegoDeManos',  personaje.habilidades['juegoDeManos']  ?? 0),
+                          campoHabilidad('intimidacion', personaje),
+                          campoHabilidad('investigacion', personaje),
+                          campoHabilidad('juegoDeManos',  personaje),
                       
                         ],
                       
@@ -381,17 +483,17 @@ class DetallesPersoonaje extends StatelessWidget {
                         children: 
                         [
                       
-                          campoHabilidadSimple('medicina',      personaje.habilidades['medicina']      ?? 0),
-                          campoHabilidadSimple('naturaleza',    personaje.habilidades['naturaleza']    ?? 0),
-                          campoHabilidadSimple('percepcion',    personaje.habilidades['percepcion']    ?? 0),
+                          campoHabilidad('medicina', personaje),
+                          campoHabilidad('naturaleza',  personaje),
+                          campoHabilidad('percepcion', personaje),
                       
-                          campoHabilidadSimple('perspicacia',   personaje.habilidades['perspicacia']   ?? 0),
-                          campoHabilidadSimple('persuasion',    personaje.habilidades['persuasion']    ?? 0),
-                          campoHabilidadSimple('religion',      personaje.habilidades['religion']      ?? 0),
+                          campoHabilidad('perspicacia', personaje),
+                          campoHabilidad('persuasion',  personaje),
+                          campoHabilidad('religion', personaje),
                       
-                          campoHabilidadSimple('sigilo',        personaje.habilidades['sigilo']        ?? 0),
-                          campoHabilidadSimple('supervivencia', personaje.habilidades['supervivencia'] ?? 0),
-                          campoHabilidadSimple('tratoAnimales', personaje.habilidades['tratoAnimales'] ?? 0),
+                          campoHabilidad('sigilo', personaje),
+                          campoHabilidad('supervivencia', personaje),
+                          campoHabilidad('tratoAnimales',  personaje),
                       
                         ],
                       

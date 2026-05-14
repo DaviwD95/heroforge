@@ -145,54 +145,53 @@ Color? colorSegunClase(Personaje personaje)
   }
 
 
-Widget campoIcono(IconData icono, Color colorIcono, TextEditingController? controller, {double size = 120 }) 
+Widget campoIcono(IconData icono, Color colorIcono, TextEditingController? controller, {double size = 120, bool readOnly = false }) 
  {
-  return Expanded(
-    child: Column(
-      children: [
-        Stack(
-        
-          alignment: Alignment.center,
-          children: [
-        
-            Icon(icono, color: colorIcono, size: size),  // el corazon/escudo grande de fondo
-        
-            SizedBox(
-              width: 40,
-              child: TextFormField(
-               // validator: validarNumeroObligatorio,
-                controller: controller,
-                textAlign: TextAlign.center,          
-                keyboardType: TextInputType.number, 
-                
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                  color: Colors.white,
-                ),
-                decoration: InputDecoration(
-                  border: InputBorder.none,  // sin borde, que no se vea el campo
-                  isDense: true,
-                ),
+  return Column(
+    children: [
+      Stack(
+      
+        alignment: Alignment.center,
+        children: [
+      
+          Icon(icono, color: colorIcono, size: size),  // el corazon/escudo grande de fondo
+      
+          SizedBox(
+            width: 40,
+            child: TextFormField(
+              readOnly: readOnly,
+             // validator: validarNumeroObligatorio,
+              controller: controller,
+              textAlign: TextAlign.center,          
+              keyboardType: TextInputType.number, 
+              
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+                color: Colors.white,
+              ),
+              decoration: InputDecoration(
+                border: InputBorder.none,  // sin borde, que no se vea el campo
+                isDense: true,
               ),
             ),
-          ],
-        ),
-
-      //El campo de error en lo iconos es de esta forma, ya que si no no se apreciara bien y queudara feo
-
-      FormField<void>(
-        validator: (_) {
-          
-          final val = controller?.text ?? '';
-          final n = int.tryParse(val);
-          if (val.isEmpty) return 'Obligatorio';
-          if (n == null) return 'Solo números';
-          return null;
-        },
-        builder: (state) => state.hasError ? Text(state.errorText!,style: TextStyle(color: Colors.red, fontSize: 11),) : SizedBox.shrink(), ),
-      ],
-    ),
+          ),
+        ],
+      ),
+  
+    //El campo de error en lo iconos es de esta forma, ya que si no no se apreciara bien y queudara feo
+  
+    FormField<void>(
+      validator: (_) {
+        
+        final val = controller?.text ?? '';
+        final n = int.tryParse(val);
+        if (val.isEmpty) return 'Obligatorio';
+        if (n == null) return 'Solo números';
+        return null;
+      },
+      builder: (state) => state.hasError ? Text(state.errorText!,style: TextStyle(color: Colors.red, fontSize: 11),) : SizedBox.shrink(), ),
+    ],
   );
  }
 
@@ -262,35 +261,13 @@ InputDecoration _inputDeco(String label, Color color, {bool hint = false}) {
     ),
   );
 }
+/**
+ * 
+ */
 
-Widget campoHabilidadSimple(String nombre, int valor) {
-
-  return Container(
-    margin: EdgeInsets.all(4),
-    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-
-    decoration: BoxDecoration(
-      color: Colors.deepPurple[50],
-      borderRadius: BorderRadius.circular(10),
-      border: Border.all(color: Colors.deepPurple),
-    ),
-
-    child: Row(
-      children: [
-
-        Expanded(child: Text(nombre, style: TextStyle(fontSize: 11))),
-
-        Text(
-          "${valor >= 0 ? '+' : ''}$valor",
-          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.deepPurple),
-        ),
-
-      ],
-    ),
-  );
-}
 
 Widget campoStatSimple(String nombre, int valor) {
+
   int mod = ((valor - 10) / 2).floor();
 
   return Container(
@@ -304,15 +281,71 @@ Widget campoStatSimple(String nombre, int valor) {
     ),
 
     child: Row(
-      children: [
+      children: [      
         
-        Expanded(child: Text(nombre, style: TextStyle(fontSize: 11))),
 
         Text(
           "$valor  (${mod >= 0 ? '+' : ''}$mod)",
           style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.deepPurple),
         ),
+
+        SizedBox(width: 8),
+
+        Expanded(child: Text(nombre, style: TextStyle(fontSize: 11, ),)),
       ],
     ),
   );
 }
+
+Widget campoHabilidad(String nombre, Personaje personaje) {
+
+  //Asi diferencio si es una stats normal o es salvacion 
+
+  final esSalvacion = ['FUE', 'DES', 'CON', 'INT', 'SAB', 'CAR'].contains(nombre);
+
+  final valor     = esSalvacion ? personaje.modSalvacion(nombre) : personaje.modHabilidad(nombre);
+  final tieneComp = esSalvacion ? personaje.tieneCompSalvacion(nombre) : personaje.tieneCompHabilidad(nombre);
+
+
+  return Container(
+    margin: EdgeInsets.all(4),
+    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+
+    decoration: BoxDecoration(
+      color: Colors.deepPurple[50],
+      borderRadius: BorderRadius.circular(10),
+      border: Border.all(color: Colors.deepPurple),
+    ),
+      
+   child: Row(
+      children: [        
+
+        //Checkboxe si tiene bonus clase
+        SizedBox(            
+          width: 20,
+          height: 20,
+         child: Checkbox(
+            value: tieneComp,
+            onChanged: null, 
+            activeColor: Colors.deepPurple,
+          ),
+        ),
+
+    
+        SizedBox(width: 5),
+          
+        Text("_${valor >= 0 ? '+' : ''}$valor _",style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.deepPurple),),
+          
+        SizedBox(width: 5),
+
+        Expanded(child: Text(nombre, style: TextStyle(fontSize: 11), textAlign: TextAlign.center)),
+
+        SizedBox(width: 3),
+
+        Text(esSalvacion ? "" : personaje.statDeHabilidad(nombre), style: TextStyle(fontSize: 11), textAlign: TextAlign.center),
+
+
+      ],
+    )
+  );
+}  

@@ -36,55 +36,65 @@ class _RecuperapasswordState extends State<Recuperapassword> {
 
     return Scaffold(
 
+      
+
       backgroundColor: AppConfig.colorScaffold,
       
       appBar: AppBar(backgroundColor: AppConfig.colorAppBar),
 
-      body: Form(
-        key: _formKey,
-        child: Column(
-          children: [
-
-            Text("Introduce el correo de tu cuenta"),
-            
-            const SizedBox(height: 30),
-
-            TextFormField(
-              controller: gmailController,
-              validator: _validarCampoObligatorio,
-
-              decoration: InputDecoration(
-                labelText: "Gmail",
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 30),
-
-           //Boton para enviar el correo pues 
-            SizedBox(
-              width: 300,
-              height: 45,
-              child: ElevatedButton(
-                onPressed: enviarEnlace,
-
-                style: ElevatedButton.styleFrom(
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Form(
+          key: _formKey,
+          child: ListView(
+           // padding: EdgeInsets.only(top: 80),
+            children: [
+              Column(
+                children: [
+              
+                  Text("Introduce el correo de tu cuenta"),
                   
-                  backgroundColor: Colors.orange,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+                  const SizedBox(height: 30),
+              
+                  TextFormField(
+                    controller: gmailController,
+                    validator: _validarCampoObligatorio,
+              
+                    decoration: InputDecoration(
+                      labelText: "Gmail",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
                   ),
-                ),
-
-                child: const Text(
-                  "Enviar enlace al correo",
-                  style: TextStyle(color: Colors.white),
-                ),
+              
+                  const SizedBox(height: 30),
+              
+                 //Boton para enviar el correo pues 
+                  SizedBox(
+                    width: 300,
+                    height: 45,
+                    child: ElevatedButton(
+                      onPressed: enviarEnlace,
+              
+                      style: ElevatedButton.styleFrom(
+                        
+                        backgroundColor: Colors.orange,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+              
+                      child: const Text(
+                        "Enviar enlace al correo",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

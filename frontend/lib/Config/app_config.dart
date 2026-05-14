@@ -25,7 +25,7 @@ class AppConfig {
 
    static Color get colorAppBar {
 
-  return  Colors.orange[100]!; //rojo capaz ¿? 
+  return  const Color.fromARGB(255, 240, 122, 75);// Colors.orange[300]!; //rojo capaz ¿? 
   
   }
 

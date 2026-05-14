@@ -1,6 +1,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:heroforge/Components/formulario_helpers.dart';
 import 'package:heroforge/Config/app_config.dart';
 import 'package:heroforge/models/personaje.dart';
 
@@ -13,6 +14,8 @@ class PersonajeAdd3 extends StatefulWidget {
 }
 
 class _PersonajeAdd3State extends State<PersonajeAdd3> {
+  
+  Color colorBasico = Colors.grey.shade100;
 
   
  
@@ -88,7 +91,53 @@ class _PersonajeAdd3State extends State<PersonajeAdd3> {
               
             Divider(color: Colors.red, thickness: 6),
 
-            SizedBox(height: 20,),        
+            SizedBox(height: 20,),  
+
+            Text("Iniciativa: Determina el orden de actuación en combate. Se calcula tirando 1d20 y sumando el modificador de Destreza del personaje.",
+             style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600)), 
+
+            Text("Velocidad: Distancia máxima que puede recorrer un personaje en su turno. Es un valor fijo según la raza: humanos y elfos 30 pies (9 m), enanos y medianos 25 pies (7.5 m)." ,
+             style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600)), 
+
+            SizedBox(height: 10,), 
+
+            Row(
+              children: [
+
+                Flexible(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+
+                      campo("Iniciativa", TextEditingController(text: widget.personaje.iniciativa.toString()), colorBasico, readOnly: true),
+
+                      SizedBox(height: 10),
+                  
+                      Image.asset('assets/yo/iniciativa.png', width: 80, height: 85),
+                      
+                    ],
+                  ),
+                ),
+
+                Flexible(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+
+                      campo("Velocidad", TextEditingController(text: widget.personaje.velocidad.toString()), colorBasico, readOnly: true),
+
+                      SizedBox(height: 10),
+                  
+                      Image.asset('assets/yo/velocidad.png', width: 100, height: 100),
+                      
+                    ],
+                  ),
+                ),                              
+
+              ],
+            ),
+
+            SizedBox(height: 20,),     
                    
         
             Row(
@@ -99,15 +148,15 @@ class _PersonajeAdd3State extends State<PersonajeAdd3> {
                             
                     children: [
                       
-                      campoHabilidad('acrobacias'),
-                      campoHabilidad('atletismo'),
-                      campoHabilidad('C.arcano'),
-                      campoHabilidad('engano'),
-                      campoHabilidad('historia'),
-                      campoHabilidad('interpretacion'),
-                      campoHabilidad('intimidacion'),
-                      campoHabilidad('investigacion'),
-                      campoHabilidad('juegoDeManos'),
+                      campoHabilidad('acrobacias', widget.personaje),
+                      campoHabilidad('atletismo', widget.personaje),
+                      campoHabilidad('C.arcano', widget.personaje),
+                      campoHabilidad('engano', widget.personaje),
+                      campoHabilidad('historia', widget.personaje),
+                      campoHabilidad('interpretacion', widget.personaje),
+                      campoHabilidad('intimidacion', widget.personaje),
+                      campoHabilidad('investigacion', widget.personaje),
+                      campoHabilidad('juegoDeManos', widget.personaje),
                        
                     ],
                   ),
@@ -119,15 +168,15 @@ class _PersonajeAdd3State extends State<PersonajeAdd3> {
                   child: Column(
                     children: [
                       
-                      campoHabilidad('medicina'),
-                      campoHabilidad('naturaleza'),
-                      campoHabilidad('percepcion'),
-                      campoHabilidad('perspicacia'),
-                      campoHabilidad('persuasion'),
-                      campoHabilidad('religion'),
-                      campoHabilidad('sigilo'),
-                      campoHabilidad('supervivencia'),
-                      campoHabilidad('tratoAnimales'),
+                      campoHabilidad('medicina', widget.personaje),
+                      campoHabilidad('naturaleza', widget.personaje),
+                      campoHabilidad('percepcion', widget.personaje),
+                      campoHabilidad('perspicacia', widget.personaje),
+                      campoHabilidad('persuasion', widget.personaje),
+                      campoHabilidad('religion', widget.personaje),
+                      campoHabilidad('sigilo', widget.personaje),
+                      campoHabilidad('supervivencia', widget.personaje),
+                      campoHabilidad('tratoAnimales', widget.personaje),
 
                     ],
                     ),
@@ -155,9 +204,9 @@ class _PersonajeAdd3State extends State<PersonajeAdd3> {
                   child: Column(
                     children: [
                   
-                      campoHabilidad("FUE"),
-                      campoHabilidad("DES"),
-                      campoHabilidad("CON"),
+                      campoHabilidad("FUE", widget.personaje),
+                      campoHabilidad("DES", widget.personaje),
+                      campoHabilidad("CON", widget.personaje),
                       
                     ],
                   ),
@@ -167,9 +216,9 @@ class _PersonajeAdd3State extends State<PersonajeAdd3> {
                   child: Column(
                     children: [
                   
-                      campoHabilidad("INT"),
-                      campoHabilidad("SAB"),
-                      campoHabilidad("CAR"),
+                      campoHabilidad("INT", widget.personaje),
+                      campoHabilidad("SAB", widget.personaje),
+                      campoHabilidad("CAR", widget.personaje),
                       
                     ],
                   ),
@@ -221,57 +270,5 @@ class _PersonajeAdd3State extends State<PersonajeAdd3> {
     
   }   
 
-  Widget campoHabilidad(String nombre) {
-
-    //Asi diferencio si es una stats normal o es salvacion 
-
-    final esSalvacion = ['FUE', 'DES', 'CON', 'INT', 'SAB', 'CAR'].contains(nombre);
-
-    final valor     = esSalvacion ? widget.personaje.modSalvacion(nombre) : widget.personaje.modHabilidad(nombre);
-    final tieneComp = esSalvacion ? widget.personaje.tieneCompSalvacion(nombre) : widget.personaje.tieneCompHabilidad(nombre);
-
-
-    return Container(
-      margin: EdgeInsets.all(4),
-      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-
-      decoration: BoxDecoration(
-        color: Colors.deepPurple[50],
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: Colors.deepPurple),
-      ),
-      
-      child: Row(
-        children: [
-          
-
-          //Checkboxe si tiene bonus clase
-          SizedBox(            
-            width: 20,
-            height: 20,
-            child: Checkbox(
-              value: tieneComp,
-              onChanged: null, 
-              activeColor: Colors.deepPurple,
-            ),
-          ),
-
     
-          SizedBox(width: 5),
-          
-          Text("_${valor >= 0 ? '+' : ''}$valor _",style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.deepPurple),),
-          
-          SizedBox(width: 5),
-
-          Expanded(child: Text(nombre, style: TextStyle(fontSize: 11), textAlign: TextAlign.center)),
-
-          SizedBox(width: 3),
-
-          Text(esSalvacion ? "" : widget.personaje.statDeHabilidad(nombre), style: TextStyle(fontSize: 11), textAlign: TextAlign.center),
-
-
-        ],
-      )
-    );
-  }    
 }

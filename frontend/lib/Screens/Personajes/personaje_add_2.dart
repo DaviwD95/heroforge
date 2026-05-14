@@ -184,9 +184,9 @@ class _PersonajeAdd2State extends State<PersonajeAdd2> {
               children: [
 
 
-                campoIcono(Icons.favorite, Colors.red, puntosGolpeMaxController),
+                Expanded(child: campoIcono(Icons.favorite, Colors.red, puntosGolpeMaxController)),
 
-                campoIcono(Icons.shield_sharp, Colors.grey, claseArmaduraController ),
+                Expanded(child: campoIcono(Icons.shield_sharp, Colors.grey, claseArmaduraController )),
 
               ],
             ),
