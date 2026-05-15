@@ -239,7 +239,7 @@ class _PerfilState extends State<Perfil> {
 
    final picker = ImagePicker();
 
-   //Selleccionar la imagen de la galeria
+   //Seleccionar la imagen de la galeria
    final XFile? image = await picker.pickImage(
      source: ImageSource.gallery,
      imageQuality: 70,
@@ -249,44 +249,44 @@ class _PerfilState extends State<Perfil> {
 
    //Si no se selecciona nada pues no devolvemos nada
    if (image == null) return;
-
+  
    if (kIsWeb) {
-
-    //En web se usa el bytes, ya que no se tiene acceso tan facil a los archivos, en android usamos FIle
-    final bytes = await image.readAsBytes();
-
-    setState(() {
+     
+     final bytes = await image.readAsBytes();
+     
+     setState(() {
       _imagenBytes = bytes;
       _imagenFile = null;
-    });
+     });
 
-    bool? cambio = await vm.cambiarFotoUrl(null, _imagenBytes, context);
+     bool? cambio = await vm.cambiarFotoUrl(null, _imagenBytes, context);
 
-   if(cambio == true)
-   {
-     ScaffoldMessenger.of(context).showSnackBar( const SnackBar(content: Text("Se ha cambiado la foto de perfil con exito!")),);
-   }else
-   {
-     ScaffoldMessenger.of(context).showSnackBar( const SnackBar(content: Text("Error, algo salio mal al cambiar la foto de perfil")),);
-   }
+     if(cambio == true)
+     {
+       ScaffoldMessenger.of(context).showSnackBar( const SnackBar(content: Text("Se ha cambiado la foto de perfil con exito!")),);
+     }else
+     {
+       ScaffoldMessenger.of(context).showSnackBar( const SnackBar(content: Text("Error, algo salio mal al cambiar la foto de perfil")),);
+     } 
 
-   } else 
+   }else 
    {
 
      setState(() {
-     _imagenFile = File(image.path);
-     _imagenBytes = null;
+
+       _imagenFile = File(image.path);
+      _imagenBytes = null;
      });
 
-    bool? cambio = await vm.cambiarFotoUrl(_imagenFile, null, context);
+     bool? cambio = await vm.cambiarFotoUrl(_imagenFile, null, context);
 
-    if(cambio == true)
-    {
+     if(cambio == true)
+     {
         ScaffoldMessenger.of(context).showSnackBar( const SnackBar(content: Text("Se ha cambiado la foto de perfil con exito!")),);
-    }else
-    {
-      ScaffoldMessenger.of(context).showSnackBar( const SnackBar(content: Text("Error, algo salio mal al cambiar la foto de perfil")),);
-    }
+     }else
+     {
+        ScaffoldMessenger.of(context).showSnackBar( const SnackBar(content: Text("Error, algo salio mal al cambiar la foto de perfil")),);
+     }
     
   }
 }

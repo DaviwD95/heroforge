@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:heroforge/models/PersonajeComplementos/ataque.dart';
-import 'package:heroforge/models/PersonajeComplementos/Hechizo.dart';
-import 'package:heroforge/models/PersonajeComplementos/Item.dart';
+
+
+
 
 class Personaje extends ChangeNotifier {
 
@@ -59,9 +59,6 @@ class Personaje extends ChangeNotifier {
 
   // Listas (tablas separadas en backend) 
 
-  List<Ataque>?  ataques;
-  List<Hechizo>? hechizos;
-  List<Item>?    inventario;
 
   Personaje({
     this.id,
@@ -96,15 +93,11 @@ class Personaje extends ChangeNotifier {
     this.ideales,
     this.vinculos,
     this.defectos,    
-    Map<String, int>? habilidades,
-    List<Ataque>?  ataques,
-    List<Hechizo>? hechizos,
-    List<Item>?    inventario,
+    
+    Map<String, int>? habilidades,    
   })  : 
-        habilidades = habilidades ?? {},
-        ataques     = ataques     ?? [],
-        hechizos    = hechizos    ?? [],
-        inventario  = inventario ?? []; 
+        habilidades = habilidades ?? {};
+      
 
 
   factory Personaje.fromJson(Map<String, dynamic> json) => Personaje(
@@ -153,9 +146,6 @@ class Personaje extends ChangeNotifier {
         habilidades: Map<String, int>.from(json['habilidades'] ?? {}),
 
         // Listas
-        ataques:   (json['ataques']    as List?)?.map((e) => Ataque.fromJson(e)).toList()  ?? [],
-        hechizos:  (json['hechizos']   as List?)?.map((e) => Hechizo.fromJson(e)).toList() ?? [],
-        inventario: (json['inventario'] as List?)?.map((e) => Item.fromJson(e)).toList()   ?? [],
       );
 
  
@@ -212,9 +202,7 @@ class Personaje extends ChangeNotifier {
 
         // Listas
 
-        "ataques":    ataques?.map((e)    => e.toJson()).toList(),
-        "hechizos":   hechizos?.map((e)   => e.toJson()).toList(),
-        "inventario": inventario?.map((e) => e.toJson()).toList(),
+        
       };
 
 

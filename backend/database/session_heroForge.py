@@ -22,10 +22,7 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 def init_db_users():    
 
     #Las importo para que sean como "reconocidas" de esta manera se crearan las tablas 
-    from models.Personaje import Personaje
-    from models.Ataques import Ataque
-    from models.Hechizos import Hechizo
-    from models.Item import Item    
+    from models.Personaje import Personaje   
     from models.User import User
 
     Base.metadata.create_all(bind=engine) #Esto crea las tablas que esten relacionadas con el base (que hereden de ella)

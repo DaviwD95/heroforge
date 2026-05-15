@@ -65,9 +65,8 @@ class Personaje(Base):
     # Habilidadees secundarias como JSON 
     habilidades = Column(JSON, default=dict)
 
-    # Relaciones para poder acceder mas facil a los campos 
     
-    ataques   = relationship("Ataque",  back_populates="personaje", cascade="all, delete-orphan")
-    hechizos  = relationship("Hechizo", back_populates="personaje", cascade="all, delete-orphan")
-    inventario = relationship("Item",   back_populates="personaje", cascade="all, delete-orphan")
+    #ataques   = 
+    #hechizos  = 
+    #inventario = 
 

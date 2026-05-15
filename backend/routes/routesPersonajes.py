@@ -191,7 +191,7 @@ def editPersonaje(data : dict, db : Session = Depends(get_db_personajes), payloa
     personaje.nivel  = data.get("nivel", personaje.nivel)
     personaje.experiencia = data.get("experiencia", personaje.experiencia)
     personaje.historia = data.get("historia", personaje.historia)
-  #  personaje.publicado = data.get("publicado", personaje.publicado)
+  # personaje.publicado = data.get("publicado", personaje.publicado)
     personaje.fuerza = data.get("fuerza", personaje.fuerza)
     personaje.destreza = data.get("destreza", personaje.destreza)
 

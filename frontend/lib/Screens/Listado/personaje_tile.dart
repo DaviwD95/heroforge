@@ -74,7 +74,7 @@ class _PersonajetileState extends State<Personajetile> {
                           child: Padding(
 
                             padding: EdgeInsets.symmetric(horizontal: 42),
-                            child: Text("Nivel: ${widget.personaje.nivel}", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),),
+                            child: Center(child: Text("Nombre: ${widget.personaje.nombre} Nivel: ${widget.personaje.nivel}", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),)),),
                        ),
 
                        SizedBox(height: 25,),

@@ -1,11 +1,11 @@
 
 from fastapi import Header, HTTPException
 
-from passlib.context import CryptContext
-from datetime import datetime, timedelta
-from jose import jwt
-
+from passlib.context import CryptContext # Hashear y cifrar
+from jose import jwt 
 from dotenv import load_dotenv
+
+from datetime import datetime, timedelta
 import os
 
 load_dotenv()
@@ -66,3 +66,4 @@ def get_payload(authorization: str = Header(...)):
     if not payload:
         raise HTTPException(status_code=401, detail="Token inválido")
     return payload
+

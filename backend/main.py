@@ -8,20 +8,16 @@ from fastapi.middleware.cors import CORSMiddleware
 import os
 from services import security 
 
-
+from services.security import get_payload
 
 
 app = FastAPI(title="HeroForge")
 
 
-def verificar_token(authorization: str = Header(...)):
-    token = authorization.replace("Bearer ", "")
-    payload = security.verify_token(token)
-    if not payload:
-        raise HTTPException(status_code=401, detail="Token inválido")
-    return payload
 
-#Esto para qeu no de error luego
+
+#Esto para que no de error luego
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # Permite que cualquier origen (dominio) haga peticiones
@@ -36,7 +32,7 @@ app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 
 app.include_router(auth_router)
-app.include_router(personajes_router,  dependencies=[Depends(verificar_token)])
+app.include_router(personajes_router,  dependencies=[Depends(get_payload)])
 
 
 @app.on_event("startup")

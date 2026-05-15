@@ -233,8 +233,17 @@ class _PersonajeAdd2State extends State<PersonajeAdd2> {
             SizedBox(height: 20,),
 
             
-             Text("Humano → +1 FUE  +1 DES  +1 CON  +1 INT  +1 SAB  +1 CAR | Elfo → +2 DES  | Enano → +2 CON  | Mediano → +2 DES ",
+            Text("Bonus segun tu raza — ${_bonusRaza[widget.personaje.raza] ?? ""}",
              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600), textAlign: TextAlign.justify,),
+
+
+            SizedBox(height: 5),
+
+            Text("Segun tu clase, ${_statsRecomendados[widget.personaje.claseBase] ?? ""}",
+             style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600), textAlign: TextAlign.justify,),
+
+
+
                        
             SizedBox(height: 20),                  
 
@@ -293,7 +302,7 @@ class _PersonajeAdd2State extends State<PersonajeAdd2> {
                         contentPadding: EdgeInsets.zero,             
                         title: Text(
                           "Método dados",
-                          style: TextStyle(fontSize: 13),
+                          style: TextStyle(fontSize: 13), textAlign: TextAlign.center,
                         ),
                         
                       ),
@@ -426,7 +435,7 @@ class _PersonajeAdd2State extends State<PersonajeAdd2> {
                          
                         title: Text(
                           "Método Seleccion",
-                          style: TextStyle(fontSize: 13),
+                          style: TextStyle(fontSize: 13, ), textAlign: TextAlign.center,
                         ),
                         //trailing: Icon(Icons.data_array_outlined),
                       ),
@@ -509,7 +518,7 @@ class _PersonajeAdd2State extends State<PersonajeAdd2> {
           SizedBox(height: 6),
 
           Text(
-            "+ $mod",
+             mod > 0 ? "+ $mod" : mod == 0 ? "" : "$mod",
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.deepPurple,),
           ),
 
@@ -561,14 +570,36 @@ class _PersonajeAdd2State extends State<PersonajeAdd2> {
           Text(nombre, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Colors.deepPurple)),
           Divider(height: 8, thickness: 0.5, color: Colors.deepPurple.shade200),
 
-          Text("PG nivel 1: $pg + CON", style: TextStyle(fontSize: 12)),
-          Text("PG por nivel: $pgn + CON", style: TextStyle(fontSize: 12)),
+          Text("PG nivel 1: $pg + mod CON", style: TextStyle(fontSize: 12)),
+          Text("PG por nivel: $pgn + mod  CON", style: TextStyle(fontSize: 12)),
           Text("CA sin armadura: 10 + DES", style: TextStyle(fontSize: 12)),
-        ],
-      ),
-    ),
-  );
-}
+         ],
+       ),
+     ),
+   );
+ }
+
+ final _statsRecomendados = {
+    "Guerrero":
+        "Stats recomendados: FUE > CON > DES. Prioriza Fuerza para golpear y Constitución para aguantar.",
+    "Picaro":
+        "Stats recomendados: DES > INT > CON. Destreza es tu stat principal para atacar y sigilo.",
+    "Clerigo":
+        "Stats recomendados: SAB > CON > FUE. Sabiduría potencia tus hechizos y curación.",
+    "Mago":
+        "Stats recomendados: INT > CON > DES. Inteligencia es tu stat principal para todos los hechizos.",
+    "Artificiero":
+        "Stats recomendados: INT > CON > DES. Similar al Mago, Inteligencia ante todo.",
+  };
+
+  final _bonusRaza = {
+
+  "Humano":   "+1 FUE  +1 DES  +1 CON  +1 INT  +1 SAB  +1 CAR",
+  "Elfo":     "+2 DES",
+  "Enano":    "+2 CON",
+  "Mediano":  "+2 DES",
+
+};
 
 
 

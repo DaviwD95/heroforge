@@ -30,6 +30,7 @@ class DetallesPersoonaje extends StatelessWidget {
         
           children: [
 
+            SizedBox(height: 10),
             //Basico
         
             Row(

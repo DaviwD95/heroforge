@@ -13,6 +13,8 @@ class ListadoPersonajesPublicados extends StatefulWidget {
 
 class _ListadopersonajesState extends State<ListadoPersonajesPublicados> {
 
+  
+
   late PersonajeViewModel viewModel;
 
   @override
@@ -20,6 +22,12 @@ class _ListadopersonajesState extends State<ListadoPersonajesPublicados> {
 
     super.initState();
     viewModel = Provider.of<PersonajeViewModel>(context, listen: false);
+
+    /**
+    * Se realiza la carga cada vez que se entra a la pantalla para garantizar
+    * que los personajes publicados por otros usuarios mientras tanto
+    * sean visibles sin necesidad de reiniciar la app.
+    */
 
     viewModel.getPersonajesPublicados(context);
   }

@@ -23,9 +23,9 @@ class AppConfig {
   
   }
 
-   static Color get colorAppBar {
+  static Color get colorAppBar {
 
-  return  const Color.fromARGB(255, 240, 122, 75);// Colors.orange[300]!; //rojo capaz ¿? 
+   return  Colors.orange[300]!; //const Color.fromARGB(255, 255, 142, 77)!; // Colors.orange[300]!; //const Color.fromARGB(255, 240, 122, 75);// Colors.orange[300]!; //rojo capaz ¿? 
   
   }
 

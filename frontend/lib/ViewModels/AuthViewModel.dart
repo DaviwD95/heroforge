@@ -9,9 +9,9 @@ import 'package:provider/provider.dart';
 
 class Authviewmodel {
 
-   final String baseUrl = AppConfig.baseUrl;
+  final String baseUrl = AppConfig.baseUrl;
 
-   Authviewmodel();
+  Authviewmodel();
 
 
   //static const String baseUrlAndroid = "http://10.0.2.2:8000"; //esto es no es local, si tuviera dominio pues si
@@ -19,6 +19,7 @@ class Authviewmodel {
 
 
   Future<Map<String, dynamic>?> loginBack(String email, String password) async {
+    
 
     final response = await http.post(
       Uri.parse("$baseUrl/login"),
@@ -34,7 +35,7 @@ class Authviewmodel {
     }
     return null;
 
-    }
+  }
 
     Future<bool> signBack(String email, String password, String fullName) async 
     {

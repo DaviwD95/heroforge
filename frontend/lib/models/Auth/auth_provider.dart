@@ -46,7 +46,8 @@ class AuthProvider extends ChangeNotifier {
 
       return "${user!.fotoUrl}?t=$_fotoCacheBuster";
 
-    }
+   }
   return user!.fotoUrl; 
-}
+ }
+
 }

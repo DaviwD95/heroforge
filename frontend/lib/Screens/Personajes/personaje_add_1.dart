@@ -315,8 +315,8 @@ class _PersonajeAddState extends State<PersonajeAdd1> {
                                (value) { setState(() => transfondoString = value); },),
                             ),
 
-                            Tooltip(message: _infoTransfondo[transfondoString].toString(),
-                            child: Icon(Icons.info_outline, color: Colors.blue),)
+                           // Tooltip(message: _infoTransfondo[transfondoString].toString(),
+                            //child: Icon(Icons.info_outline, color: Colors.blue),)
                           ],
                         )
 
@@ -367,17 +367,17 @@ class _PersonajeAddState extends State<PersonajeAdd1> {
 
 
               //Edad
-                Expanded(child: campo("Ojos", ojosController, colorAspectoFisico, obligatorio: false)),
+                Expanded(child: campo("Ojos (Color)", ojosController, colorAspectoFisico, obligatorio: false)),
 
                 SizedBox(width: 15),
 
                 //Altura
-                Expanded(child: campo("Pelo", peloController, colorAspectoFisico, obligatorio: false)),
+                Expanded(child: campo("Pelo (Color)", peloController, colorAspectoFisico, obligatorio: false)),
 
                 SizedBox(width: 15),
 
                 //peso
-                Expanded(child: campo("Piel", pielController, colorAspectoFisico, obligatorio: false))
+                Expanded(child: campo("Piel (Color)", pielController, colorAspectoFisico, obligatorio: false))
 
              ],),
 

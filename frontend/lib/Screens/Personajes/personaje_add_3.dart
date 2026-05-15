@@ -93,6 +93,8 @@ class _PersonajeAdd3State extends State<PersonajeAdd3> {
 
             SizedBox(height: 20,),  
 
+
+
             Text("Iniciativa: Determina el orden de actuación en combate. Se calcula tirando 1d20 y sumando el modificador de Destreza del personaje.",
              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600)), 
 
@@ -102,6 +104,7 @@ class _PersonajeAdd3State extends State<PersonajeAdd3> {
             SizedBox(height: 10,), 
 
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
 
                 Flexible(
@@ -109,11 +112,11 @@ class _PersonajeAdd3State extends State<PersonajeAdd3> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
 
-                      campo("Iniciativa", TextEditingController(text: widget.personaje.iniciativa.toString()), colorBasico, readOnly: true),
+                      campo("Iniciativa", TextEditingController(text: "+ ${widget.personaje.iniciativa.toString()}"), colorBasico, readOnly: true),
 
                       SizedBox(height: 10),
                   
-                      Image.asset('assets/yo/iniciativa.png', width: 80, height: 85),
+                      Image.asset('assets/Yo/iniciativa.png', width: 90, height: 95),
                       
                     ],
                   ),
@@ -128,7 +131,7 @@ class _PersonajeAdd3State extends State<PersonajeAdd3> {
 
                       SizedBox(height: 10),
                   
-                      Image.asset('assets/yo/velocidad.png', width: 100, height: 100),
+                      Image.asset('assets/Yo/velocidad.png', width: 90, height: 90),
                       
                     ],
                   ),
@@ -137,7 +140,12 @@ class _PersonajeAdd3State extends State<PersonajeAdd3> {
               ],
             ),
 
-            SizedBox(height: 20,),     
+            SizedBox(height: 20,), 
+
+            Text("Son tiradas de dado para resolver situaciones inciertas fuera del combate. Si tienes competencia en ella, tiras mejor. El Dungeon Master (DM) decide cuándo pedirlas.",
+             style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
+
+            SizedBox(height: 20),    
                    
         
             Row(

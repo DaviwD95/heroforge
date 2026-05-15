@@ -1,6 +1,7 @@
 
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:heroforge/Components/formulario_helpers.dart';
 import 'package:heroforge/Config/app_config.dart';
 import 'package:heroforge/Screens/Login/recupera_password.dart';
 import 'package:heroforge/Screens/Sign/sign_in.dart';
@@ -26,6 +27,7 @@ class _LoginsignState extends State<Login> {
   late TextEditingController gmailController, passwordController;
   final _formKey = GlobalKey<FormState>();
   bool passwordOculta= false;
+
   @override
   void initState() {
     super.initState();
@@ -97,7 +99,7 @@ class _LoginsignState extends State<Login> {
                           width: 300,
                           child: TextFormField(
                             controller: passwordController,
-                            validator: _validarCampoObligatorio,
+                            validator: validarCampoObligatorio,
                             obscureText: passwordOculta,
                               
                             decoration: 
@@ -213,12 +215,7 @@ class _LoginsignState extends State<Login> {
     return null;
   }
 
-  String? _validarCampoObligatorio(String? value) {
-    if (value == null || value.trim().isEmpty) {
-      return "Este campo es obligatorio";
-    }
-    return null;
-  }
+  
 
   void loguearse() async {
 

@@ -4,6 +4,7 @@ import 'package:heroforge/models/personaje.dart';
 
 
 
+//Validador para campos Duoble 
 
 String? validarDouble(String? value, {bool obligatorio = false}) {
 
@@ -20,6 +21,8 @@ String? validarDouble(String? value, {bool obligatorio = false}) {
 
 }
 
+//Validador de campo obligatorio
+
 
 String? validarCampoObligatorio(String? value) {
   
@@ -29,6 +32,8 @@ String? validarCampoObligatorio(String? value) {
   }
   return null;
 }
+
+//Validador para numero obligatorio 
 
 
 String? validarNumeroObligatorio(String? value, { bool obligatorio = false}) {
@@ -54,6 +59,7 @@ String? validarNumeroObligatorio(String? value, { bool obligatorio = false}) {
     
 
 
+//Drop down 
 
 Widget dropDown(String label, String? value, List<String> opciones, ValueChanged<String?> onChanged) {
 
@@ -106,7 +112,7 @@ Color? colorSegunClase(Personaje personaje)
 
       return Colors.blue;      
 
-    }else if(personaje.clase == "Clerigo"){
+    }else if(personaje.claseBase == "Clerigo"){
 
       return Colors.amber[300];      
     }
@@ -145,6 +151,8 @@ Color? colorSegunClase(Personaje personaje)
   }
 
 
+//Para poder hacer escribir en iconos, hacinedolo visualmente mas agradable
+
 Widget campoIcono(IconData icono, Color colorIcono, TextEditingController? controller, {double size = 120, bool readOnly = false }) 
  {
   return Column(
@@ -172,14 +180,14 @@ Widget campoIcono(IconData icono, Color colorIcono, TextEditingController? contr
               ),
               decoration: InputDecoration(
                 border: InputBorder.none,  // sin borde, que no se vea el campo
-                isDense: true,
+                isDense: true, //Limita el padding vertical, haciendo que al escribir, no se salga del icono
               ),
             ),
           ),
         ],
       ),
   
-    //El campo de error en lo iconos es de esta forma, ya que si no no se apreciara bien y queudara feo
+    //El campo de error en lo iconos es de esta forma, ya que si no no se apreciara bien y se vera mal
   
     FormField<void>(
       validator: (_) {
@@ -237,13 +245,13 @@ InputDecoration _inputDeco(String label, Color color, {bool hint = false}) {
 
     contentPadding: EdgeInsets.symmetric(horizontal: 14, vertical: 12),
 
-    //Para que sirve ? 
+    //El por defecto, si falla alguno salta este y se usa 
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(10),
       borderSide: BorderSide(color: Color(0xFFE0E0E0)),
     ),
 
-    //Para que sirve 
+    //Borde cuando no se toca, en estado normal 
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(10),
       borderSide: BorderSide(color: Color(0xFFE8E8F0)),
@@ -261,9 +269,7 @@ InputDecoration _inputDeco(String label, Color color, {bool hint = false}) {
     ),
   );
 }
-/**
- * 
- */
+
 
 
 Widget campoStatSimple(String nombre, int valor) {

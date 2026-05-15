@@ -18,37 +18,39 @@ class Dados extends StatefulWidget {
 }
 
 class _DadosState extends State<Dados> {
+  
 
-    Random random = Random();
+  Random random = Random();
 
-    final player = AudioPlayer();
+  final player = AudioPlayer();
 
-    final Dadosviewmodel _dadosviewmodel = Dadosviewmodel();
-    String? frase;    
+  final Dadosviewmodel _dadosviewmodel = Dadosviewmodel();
 
-    Timer? _timer;
+  String? frase;    
 
-    int modificador = 0;
-    int cantidad = 1; 
+  Timer? _timer;
 
-    int? resultadoActual;
-    String? tiradaModificadorAparte = "";
-    List<String> historial = [];
+  int modificador = 0;
+  int cantidad = 1; 
 
-    @override void initState() {
-      super.initState();
-      cargarDato();
+  int? resultadoActual;
+  String? tiradaModificadorAparte = "";
+  List<String> historial = [];
+
+  @override void initState() {
+    super.initState();
+    cargarDato();
     
-    }
+  }
 
 
-    void cargarDato() async {
+  void cargarDato() async {
       
-      frase = await _dadosviewmodel.getDato(context);
+    frase = await _dadosviewmodel.getDato(context);
       
-      setState(() {});
+    setState(() {});
       
-    }
+ }
   
   
 
@@ -57,13 +59,14 @@ class _DadosState extends State<Dados> {
 
   @override
   Widget build(BuildContext context) {
+    
 
    
 
     //Esto hace que se adapten el tamaño de los dados
 
     final screenWidth = MediaQuery.of(context).size.width;
-    final iconSize = (screenWidth / 5).clamp(40.0, 90.0);//Clamp es el para poner minimo y maximo 
+    final iconSize = (screenWidth / 5).clamp(40.0, 90.0); //Clamp es el para poner minimo y maximo 
 
 
     return ListView(
@@ -74,7 +77,7 @@ class _DadosState extends State<Dados> {
           children: [
         
             Container(
-              color: Color(0xFFD4A574),// Colors.grey[300],
+              color: Colors.orange[100], // Color(0xFFD4A574),// Colors.grey[300],
         
               child: Center(
                 child: Column(
@@ -203,6 +206,7 @@ class _DadosState extends State<Dados> {
             ),
         
             //----------Resultado---------
+
             SizedBox(height: 30),
         
             
@@ -412,6 +416,8 @@ class _DadosState extends State<Dados> {
 
   void tirarDado(int caras) {
 
+    //Esto es para el sonidito al tirar el dado 
+
     int numero = random.nextInt(2);
 
     if(numero == 0)
@@ -426,7 +432,7 @@ class _DadosState extends State<Dados> {
     final resultadoFinal = sumarDados(caras);
     int ticks = 0;
 
-    //Cancelamps los ticks por si ya habia uno empezad
+    //Cancelamos los ticks por si ya habia uno empezado
     _timer?.cancel();
 
     //Hacemos que en pantalla se calcule varias veces el resultado variando
@@ -466,13 +472,10 @@ class _DadosState extends State<Dados> {
 
 
 
- 
 
 
 
-
-
-
+  
 
 
 

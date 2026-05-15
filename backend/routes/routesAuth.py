@@ -164,6 +164,10 @@ async  def changePhoto(token : str = Form(), file: UploadFile = File(...), db : 
     # Guarda la imagen conruta correcta (si)
     file_location = f"uploads/{user.id}.jpg"
 
+
+    #wb es para abrir el archvo en modo escritura, luego
+    # lee los bytes de la imagen que llegó del frontend y los escribe en disco.
+
     with open(file_location, "wb") as f:
         f.write(await file.read())
 

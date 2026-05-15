@@ -1,6 +1,6 @@
 class Usuario {
 
-    //Se que en el token ya van el rol y el email, pero es mas por tenero a mano en uusuario y poder acceder a el facil pues
+  
   int id; 
   String email; 
   String nombre;
