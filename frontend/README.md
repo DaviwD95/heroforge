@@ -149,6 +149,3 @@ Conecta el móvil con la depuración USB activada y ejecuta:
 
 ---
 
-## Enlace GitHub
-
-[https://github.com/DaviwD95/heroforge](https://github.com/DaviwD95/heroforge)
