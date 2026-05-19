@@ -48,6 +48,9 @@ Crea un archivo `.env` en la carpeta `backend` con el siguiente modelo:
 
     IA_KEY=tu_clave_groq
 
+    #La ip para guardar las fotos, pones tu ip, en todo caso localhost si es pc web 
+    BASE_URL=
+
     # Para web/Chrome:
     RESET_URL=http://localhost:3000
 
@@ -80,8 +83,12 @@ Crea un archivo `.env` en la carpeta `backend` con el siguiente modelo:
 
 ## Lanzar en emulador Android
 
-    flutter emulators --launch Pixel_6a
-    flutter run -d emulator-5554
+    Para lanzarlo en el emulador (Primero lanzamos el backend), se lanza primero flutter web en modo servidor, luego  el emulador y después que corra la aplicación.
+    
+    flutter run -d web-server --web-hostname 0.0.0.0 --web-port 3000
+    flutter launch Pixel_6a   
+    flutter run -d Pixel_6a   
+
 
 ---
 
