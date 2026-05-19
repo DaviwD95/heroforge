@@ -303,7 +303,7 @@ class _PersonajetileState extends State<Personajetile> {
 
             Icon(icon, color: Colors.white),
             SizedBox(width: 6),
-            Text(label, style: const TextStyle(color: Colors.white, fontSize: 16)),
+            Text(label, style: TextStyle(color: Colors.white, fontSize: 16)),
 
           ],
         ))

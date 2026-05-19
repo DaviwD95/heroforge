@@ -158,10 +158,10 @@ async  def changePhoto(token : str = Form(), file: UploadFile = File(...), db : 
     if not user: 
         raise HTTPException(status_code=404, detail="Error, usuario no encontrado")
     
-    # Esto crea la carpeta si no existe 
+    # Esto crea la carpeta si no existe  (por si acaso, aunque igualmente se crea en el  main ya )
     os.makedirs("uploads", exist_ok=True)
 
-    # Guarda la imagen conruta correcta (si)
+    # Guarda la imagen con ruta correcta (si)
     file_location = f"uploads/{user.id}.jpg"
 
 

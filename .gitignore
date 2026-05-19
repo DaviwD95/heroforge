@@ -3,6 +3,8 @@ backend/venv/
 backend/__pycache__/
 backend/.env
 backend/*.sqlite3
+backend/uploads/
+backend/PhotoUploadsPersonajes/
 
 # Frontend
 frontend/node_modules/

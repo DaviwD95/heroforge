@@ -21,7 +21,7 @@ app = FastAPI(title="HeroForge")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # Permite que cualquier origen (dominio) haga peticiones
-    allow_credentials=True,
+    allow_credentials=True, #Permite cookies, 
     allow_methods=["*"],  # Permite GET, POST, PUT, DELETE, etc.
     allow_headers=["*"],  # Permite cabeceras como Content-Type
 )

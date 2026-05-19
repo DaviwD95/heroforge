@@ -43,10 +43,20 @@ class _DadosState extends State<Dados> {
     
   }
 
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
 
   void cargarDato() async {
       
     frase = await _dadosviewmodel.getDato(context);
+
+
+    if (!mounted) return; //Como tarda un poco, lo que hace es matar el metodo si es que te sales de la pantalla 
+
       
     setState(() {});
       
@@ -436,7 +446,7 @@ class _DadosState extends State<Dados> {
     _timer?.cancel();
 
     //Hacemos que en pantalla se calcule varias veces el resultado variando
-    _timer = Timer.periodic(Duration(milliseconds: 80), (timer) {
+    _timer = Timer.periodic(Duration(milliseconds: 120), (timer) {
       setState(() {
         resultadoActual = sumarDados(caras);
       });
@@ -464,7 +474,7 @@ class _DadosState extends State<Dados> {
 
     int suma = 0;
     for (int i = 0; i < cantidad; i++) {
-      suma += Random().nextInt(caras) + 1;
+      suma += random.nextInt(caras) + 1;
     }
     return suma;
 

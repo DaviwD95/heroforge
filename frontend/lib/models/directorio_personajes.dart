@@ -57,17 +57,8 @@ class DirectorioPersonajes with ChangeNotifier {
   void setPersonajes(List<Personaje> nuevos) {
   _personajes = nuevos;
   notifyListeners();
-}
 
-  
-  
-
-
-
-  
-
-
-
+ }
   
 
 }

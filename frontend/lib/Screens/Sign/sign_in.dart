@@ -99,7 +99,7 @@ class _LoginsignState extends State<Sign> {
                         ),
                       ),
                   
-                      const SizedBox(height: 30),
+                       SizedBox(height: 30),
                   
                       SizedBox(
                         width: 300,
@@ -116,7 +116,7 @@ class _LoginsignState extends State<Sign> {
                         ),
                       ),
                   
-                      const SizedBox(height: 30),
+                      SizedBox(height: 30),
                   
                       /// Boton para Crearse la cuenta 
                       SizedBox(
@@ -132,7 +132,7 @@ class _LoginsignState extends State<Sign> {
                             ),
                           ),
                   
-                          child: const Text(
+                          child:  Text(
                             "Crear cuenta",
                             style: TextStyle(color: Colors.white),
                           ),
@@ -140,7 +140,7 @@ class _LoginsignState extends State<Sign> {
                       ),                 
                   
                       
-                      const SizedBox(height: 30),
+                       SizedBox(height: 30),
                   
                       TextButton(
                         onPressed: () {Navigator.of(context).push(MaterialPageRoute(builder: (context) => Login()),);},
@@ -181,6 +181,7 @@ class _LoginsignState extends State<Sign> {
   }
 
   String? _validarCampoObligatorio(String? value) {
+    
     if (value == null || value.trim().isEmpty) {
       return "Este campo es obligatorio";
     }

@@ -89,15 +89,15 @@ class _DetallesPersoonajeState extends State<DetallesPersoonaje> {
 
 
                 SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.2, // 20% del ancho de pantal
-                  height: 300,
+                  width: MediaQuery.of(context).size.width * 0.4, // 40% del ancho de pantal
+                  height: 280,
                   child: InkWell(
                     child: Container(                            
                   
                       decoration: BoxDecoration(
                         color: Colors.grey[200],
                         borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: Colors.blue, width: 2),
+                        border: Border.all(color: colorSegunClase(widget.personaje) ?? Colors.greenAccent, width: 3),
                       ),
                   
                       child: ClipRRect(
@@ -587,15 +587,16 @@ class _DetallesPersoonajeState extends State<DetallesPersoonaje> {
     
     if (_imagenBytes != null) {
 
-      return Image.memory(_imagenBytes!, fit: BoxFit.cover);
+      return Image.memory(_imagenBytes!, fit: BoxFit.contain);
 
     } else if (_imagenFile != null) {
 
-      return Image.file(_imagenFile!, fit: BoxFit.cover);
+      return Image.file(_imagenFile!, fit: BoxFit.contain);
 
     } else if (personaje.imagenUrl != null) { 
 
-      return Image.network(personaje.imagenUrl!, fit: BoxFit.cover);
+      //Se pone para que flutter piense que es difernte y la recargue 
+      return Image.network("${personaje.imagenUrl!}?t=${DateTime.now().millisecondsSinceEpoch}", fit: BoxFit.contain);
 
      } else {
       return Icon(Icons.person, size: 50, color: Colors.grey);

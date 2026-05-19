@@ -1,14 +1,13 @@
 
-import 'dart:io';
+
 import 'dart:math';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:heroforge/Components/formulario_helpers.dart';
 import 'package:heroforge/Config/app_config.dart';
 import 'package:heroforge/ViewModels/PersonajeViewModel.dart';
 import 'package:heroforge/models/personaje.dart';
-import 'package:image_picker/image_picker.dart';
+
 import 'package:provider/provider.dart';
 
 class PersonajeAdd1 extends StatefulWidget {

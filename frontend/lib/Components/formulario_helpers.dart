@@ -129,25 +129,25 @@ Color? colorSegunClase(Personaje personaje)
 
   String imagenSegunClase(String? clase) {
       
-      const imagenes = {
+    const imagenes = {
         'Guerrero':    'assets/clases/guerrero.png',
         'Mago':        'assets/clases/mago.png',
         'Clerigo':     'assets/clases/clerigo.png',
         'Picaro':      'assets/clases/picaro.png',
         'Artificiero': 'assets/clases/artificiero.png',
         };
-      return imagenes[clase] ?? 'assets/clases/default.png';
+    return imagenes[clase] ?? 'assets/clases/default.png';
   }
 
-   String imagenSegunRaza(String? raza) {
+  String imagenSegunRaza(String? raza) {
       
-      const imagenes = {
+    const imagenes = {
         'Humano':    'assets/razas/humano.png',
         'Elfo':        'assets/razas/elfo.png',
         'Mediano':     'assets/razas/mediano.png',
         'Enano':      'assets/razas/enano.png',        
         };
-      return imagenes[raza] ?? 'assets/clases/default.png';
+    return imagenes[raza] ?? 'assets/clases/default.png';
   }
 
 
@@ -225,6 +225,7 @@ Widget campoDouble(String label, TextEditingController controller, Color colorFo
     controller: controller,
     keyboardType: TextInputType.numberWithOptions(decimal: true),
     style: TextStyle(fontWeight: FontWeight.bold),
+    
     decoration: _inputDeco(label, colorFondo),
     validator: (value) => validarDouble(value, obligatorio: obligatorio),
   );

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:heroforge/Config/app_config.dart';
+import 'package:heroforge/Screens/Extra/glosario.dart';
 import 'package:heroforge/Screens/Extra/quienes_somos.dart';
 import 'package:heroforge/Screens/Extra/terminos_condiciones.dart';
 import 'package:heroforge/Screens/Login/cambiar_password.dart';
@@ -70,7 +71,13 @@ class _PerfilState extends State<Perfil> {
             {
               Navigator.of(context).push( MaterialPageRoute(builder: (context) => QuienesSomos()),);
 
-            }, icon: Icon(Icons.person))
+            }, icon: Icon(Icons.person)),
+
+            IconButton(onPressed: ()
+            {
+              Navigator.of(context).push( MaterialPageRoute(builder: (context) => Glosario()),);
+
+            }, icon: Icon(Icons.library_books))
           ],
         ),
 

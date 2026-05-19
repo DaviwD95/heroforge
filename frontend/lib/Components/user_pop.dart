@@ -103,5 +103,5 @@ class UserPop extends StatelessWidget {
       child: Icon(Icons.person, size: 50, color: Colors.grey),
     );
   }
-}
+ } 
 }

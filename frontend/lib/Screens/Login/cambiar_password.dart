@@ -4,8 +4,6 @@ import 'package:heroforge/Config/app_config.dart';
 import 'package:heroforge/ViewModels/AuthViewModel.dart';
 
 
-
-
 //PANTALLA DONDE SE CAMBIARA LA PASSWOD 
 class Cambiarpassword extends StatefulWidget {
 
@@ -32,8 +30,6 @@ class _CambiarpasswordState extends State<Cambiarpassword> {
   void initState() {
 
     super.initState();
-
-
     
     token = widget.token;
     
@@ -58,6 +54,8 @@ class _CambiarpasswordState extends State<Cambiarpassword> {
         child: Column(
           children: [
 
+            SizedBox(height: 30),
+
             TextFormField(
               controller: passwordNuevaController,
               validator: _validarCampoObligatorio,
@@ -70,7 +68,7 @@ class _CambiarpasswordState extends State<Cambiarpassword> {
               ),
             ),
 
-            const SizedBox(height: 30),
+            SizedBox(height: 30),
 
            //Boton para aceptar y hacer el cambio 
 
@@ -78,8 +76,7 @@ class _CambiarpasswordState extends State<Cambiarpassword> {
               width: 300,
               height: 45,
               child: ElevatedButton(
-                onPressed: cambiarPassword
-                ,
+                onPressed: cambiarPassword,
 
                 style: ElevatedButton.styleFrom(
                   
@@ -89,7 +86,7 @@ class _CambiarpasswordState extends State<Cambiarpassword> {
                   ),
                 ),
 
-                child: const Text(
+                child:  Text(
                   "Cambiar contraseña",
                   style: TextStyle(color: Colors.white),
                 ),

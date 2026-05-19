@@ -85,7 +85,7 @@ class _RecuperapasswordState extends State<Recuperapassword> {
                         ),
                       ),
               
-                      child: const Text(
+                      child:  Text(
                         "Enviar enlace al correo",
                         style: TextStyle(color: Colors.white),
                       ),

@@ -248,6 +248,10 @@ def removePersonaje(data : dict, db : Session = Depends(get_db_personajes), payl
             status_code=404,
             detail="Personaje no encontrado"
         )    
+    
+    file_path = f"PhotoUploadsPersonajes/{personaje.id}.jpg"
+    if os.path.exists(file_path):
+        os.remove(file_path)
 
     
     db.delete(personaje)
@@ -320,7 +324,7 @@ async  def changePhoto(id: int = Form(...), file: UploadFile = File(...), db : S
     if not personaje: 
         raise HTTPException(status_code=404, detail="Error, personaje no encontrado")
     
-    # Esto crea la carpeta si no existe 
+    # Esto crea la carpeta si no existe (por si acaso, aunque igualmentw se crea en el  main ya )
     os.makedirs("PhotoUploadsPersonajes", exist_ok=True)
 
     # Guarda la imagen conruta correcta (si)
