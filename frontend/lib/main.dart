@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:heroforge/Screens/Login/cambiar_password.dart';
 
@@ -65,9 +66,12 @@ class _MyAppState extends State<MyApp> {
         ),
         onGenerateRoute: (settings) {
           
-          final uri = Uri.base;
+          //final uri = Uri.base; FUNciona si es web
 
-          //final uri = Uri.parse(settings.name ?? '/');
+          final uri = kIsWeb ? Uri.base : Uri.parse(settings.name ?? '/');
+
+
+        //  final uri = Uri.parse(settings.name ?? '/');
 
           if (uri.path == "/reset-password") {
             final token = uri.queryParameters["token"] ?? "";

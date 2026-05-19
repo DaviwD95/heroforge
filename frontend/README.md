@@ -1,16 +1,147 @@
-# heroforge
+# HeroForge 🎲
 
-A new Flutter project.
+Aplicación multiplataforma para la creación, gestión y publicación de fichas de personajes de Dungeons & Dragons. Disponible en **Flutter Web** y **Android**.
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## Tecnologías
 
-A few resources to get you started if this is your first Flutter project:
+- **Frontend:** Flutter (Web + Android)
+- **Backend:** Python + FastAPI + Uvicorn
+- **Base de datos:** MariaDB + SQLAlchemy
+- **Herramientas:** HeidiSQL
+- **IA:** Groq (llama-3.3-70b-versatile)
+- **Autenticación:** JWT (python-jose + passlib/Argon2)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+---
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Requisitos previos
+
+- Python 3.10+
+- Flutter SDK
+- MariaDB en local
+- Cuenta de Google con clave de aplicación para el email
+- Clave de API de [Groq](https://console.groq.com/)
+
+---
+
+## Instalación del Backend
+
+    cd backend
+    python -m venv venv
+    venv\Scripts\activate
+    pip install -r requirements.txt
+
+---
+
+## Variables de entorno
+
+Crea un archivo `.env` en la carpeta `backend` con el siguiente modelo:
+
+    HEROFORGE_DATABASE_URL=mysql+pymysql://usuario:contraseña@localhost/heroforge
+
+    SECRET_KEY=tu_clave_secreta
+
+    MAIL_USERNAME=tu_correo@gmail.com
+    MAIL_PASSWORD=tu_clave_de_aplicacion_google
+    MAIL_FROM=tu_correo@gmail.com
+
+    IA_KEY=tu_clave_groq
+
+    # Para web/Chrome:
+    RESET_URL=http://localhost:3000
+
+    # Para emulador Android (descomentar y comentar la de arriba):
+    # RESET_URL=http://10.0.2.2:3000
+
+> **MAIL_PASSWORD**: ve a los ajustes de tu cuenta de Google → Seguridad → Contraseñas de aplicaciones y genera una clave.  
+> **IA_KEY**: genera una clave en [console.groq.com](https://console.groq.com/).
+
+---
+
+## Arrancar el backend
+
+    uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+
+---
+
+## Instalación del Frontend
+
+    cd frontend
+    flutter pub get
+
+---
+
+## Lanzar en Chrome (web)
+
+    flutter run -d chrome --web-port 3000
+
+---
+
+## Lanzar en emulador Android
+
+    flutter emulators --launch Pixel_6a
+    flutter run -d emulator-5554
+
+---
+
+## Lanzar en dispositivo físico por USB
+
+Conecta el móvil con la depuración USB activada y ejecuta:
+
+    flutter run
+
+> En este caso cambia en `lib/Config/app_config.dart` la variable `isEmulador` a `false` y pon la IP de tu PC en la red local.
+
+---
+
+## Configuración según plataforma (app_config.dart)
+
+    static const bool isEmulador = true; // false si usas móvil físico por USB
+
+    static String get baseUrl {
+      if (kIsWeb) {
+        return "http://localhost:8000";
+      } else if (defaultTargetPlatform == TargetPlatform.android && isEmulador) {
+        return "http://10.0.2.2:8000";
+      } else {
+        return "http://192.168.X.X:8000"; // IP de tu PC en la red local
+      }
+    }
+
+---
+
+## Funcionalidades
+
+- Registro e inicio de sesión con JWT
+- Recuperación de contraseña por email
+- CRUD de fichas de personaje (3 pasos: datos básicos, estadísticas, habilidades)
+- Publicación de personajes visibles para otros usuarios
+- Lanzamiento de dados (d4, d6, d8, d10, d12, d20, d100)
+- Generación de historia con IA (Groq)
+- Cambio de foto, nombre y email de perfil
+
+---
+
+## Estructura del proyecto
+
+    heroforge/
+    ├── backend/
+    │   ├── main.py
+    │   ├── models/
+    │   ├── services/
+    │   ├── database/
+    │   ├── uploads/
+    │   └── .env
+    └── frontend/
+        └── lib/
+            ├── Config/
+            ├── Screens/
+            ├── ViewModels/
+            └── models/
+
+---
+
+## Enlace GitHub
+
+[https://github.com/DaviwD95/heroforge](https://github.com/DaviwD95/heroforge)

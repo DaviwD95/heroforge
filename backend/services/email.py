@@ -38,11 +38,13 @@ conf = ConnectionConfig(
 #El enlace con el email para que sirva en movil tiene que ser un dominio o algo 
 async def send_reset_email(email: str, token: str):
 
-    #reset_link = f"myapp://reset-password?token={token}"
-    #reset_link = f"http://192.168.18.242:3000/reset-password?token={token}" #Raro no funca ahora, supongo que es como lo lanzo
-    #reset_link = f"http://localhost:8000/reset-password?token={token}" #este es el de solo web 
+    RESET_URL = os.getenv("RESET_URL", "http://localhost:3000")    
+
+    reset_link =  f"{RESET_URL}/reset-password?token={token}"
     
-    reset_link = f"http://localhost:3000/reset-password?token={token}" #funca si 
+    #reset_link = f"http://localhost:3000/reset-password?token={token}" #funcionaa si en web pc
+
+    #reset_link = f"http://10.0.2.2:3000/reset-password?token={token}" #funciona en el emulador
 
     message = MessageSchema(
         subject="Recuperar contraseña",

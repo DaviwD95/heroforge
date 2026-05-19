@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 //Esta puesto de esta manera para que sea sencillo cambiar en donde se lanza, para que si se tiene dominio se ponga allí
 class AppConfig {
 
-  static String get baseUrl {
+  /**
+   * static String get baseUrl {
 
     if (kIsWeb) {
       return "http://localhost:8000";
@@ -14,6 +15,41 @@ class AppConfig {
       return "http://192.168.18.242:8000";
     }
   }
+   */
+
+
+  
+
+ 
+// true = emulador, false = móvil físico por USB
+static const bool isEmulador = true;
+
+/**
+ * static String get baseUrl {
+  if (kIsWeb) {
+    return "http://localhost:8000";
+  } else if (defaultTargetPlatform == TargetPlatform.android && isEmulador) {
+    return "http://10.0.2.2:8000";
+  } else {
+    return "http://192.168.18.242:8000";
+  }
+}
+ */
+
+static String get baseUrl {
+  if (kIsWeb) {
+    final host = Uri.base.host;
+    if (host == '10.0.2.2') {
+      return "http://10.0.2.2:8000";
+    }
+    return "http://localhost:8000";
+  } else if (defaultTargetPlatform == TargetPlatform.android && isEmulador) {
+    return "http://10.0.2.2:8000";
+  } else {
+    return "http://192.168.18.242:8000";
+  }
+}
+
 
  
 

@@ -307,3 +307,7 @@ def addPersonajesPublicados(data : dict, db : Session = Depends(get_db_personaje
 
 
 
+
+
+
+ 
