@@ -27,8 +27,13 @@ app.add_middleware(
 )
 
 os.makedirs("uploads", exist_ok=True)
+
+os.makedirs("PhotoUploadsPersonajes", exist_ok=True)
+
+
 #Para poder aceptar la subida de archivos (en este caso la uso para imagenes)
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
+app.mount("/PhotoUploadsPersonajes", StaticFiles(directory="PhotoUploadsPersonajes"), name="PhotoUploadsPersonajes")
 
 
 app.include_router(auth_router)

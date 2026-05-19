@@ -292,32 +292,26 @@ class _PerfilState extends State<Perfil> {
 }
 
   Widget _buildImage() {
-   
-    //Estos if hacen falta pars mostrar instantaneamente la foto al cambiarse, 
+    //Estos if hacen falta pars mostrar instantaneamente la foto al cambiarse,
 
     if (_imagenBytes != null) {
-        return Image.memory(
-          _imagenBytes!,
-          fit: BoxFit.cover,
-    );
+
+      return Image.memory(_imagenBytes!, fit: BoxFit.cover);
+
     } else if (_imagenFile != null) {
-      return Image.file(
-        _imagenFile!,
-        fit: BoxFit.cover,
-    );
-  } else if (user?.fotoUrl != null) {
 
-    
-     final url = Provider.of<AuthProvider>(context, listen: false).fotoUrlConCache;
+      return Image.file(_imagenFile!, fit: BoxFit.cover);
 
-     return Image.network("$url",fit: BoxFit.cover,);   
-    
-  } else {
-    return Center(
-      child: Icon(Icons.person, size: 50, color: Colors.grey),
-    );
+    } else if (user?.fotoUrl != null) {
+
+      final url = Provider.of<AuthProvider>(context, listen: false, ).fotoUrlConCache;
+
+      return Image.network("$url", fit: BoxFit.cover);
+      
+    } else {
+      return Center(child: Icon(Icons.person, size: 50, color: Colors.grey));
+    }
   }
-}
 
 //MAs comodo y asi no repito tanto
 Future<void> _editarCampo(String titulo, String? valorInicial,  Future<bool?> Function(String, BuildContext) onGuardar, String? Function(String?) validator) async {

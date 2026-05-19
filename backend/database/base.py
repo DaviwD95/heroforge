@@ -1,7 +1,9 @@
 
 from sqlalchemy.orm import declarative_base
+import os
 
-BASE_URL = "http://192.168.18.242:8000"
+
+BASE_URL = os.getenv("BASE_URL", "http://localhost:8000")
 
 
 Base = declarative_base()

@@ -1,11 +1,14 @@
 
+import 'dart:io';
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:heroforge/Components/formulario_helpers.dart';
 import 'package:heroforge/Config/app_config.dart';
 import 'package:heroforge/ViewModels/PersonajeViewModel.dart';
 import 'package:heroforge/models/personaje.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class PersonajeAdd1 extends StatefulWidget {
@@ -17,6 +20,8 @@ class PersonajeAdd1 extends StatefulWidget {
 }
 
 class _PersonajeAddState extends State<PersonajeAdd1> {
+
+  
 
   late PersonajeViewModel vm;
 
@@ -341,6 +346,8 @@ class _PersonajeAddState extends State<PersonajeAdd1> {
             Divider(color: Colors.red, thickness: 6),
 
             SizedBox(height: 20,),
+            
+            
 
             Row(
               children: [
@@ -548,7 +555,9 @@ class _PersonajeAddState extends State<PersonajeAdd1> {
     "Clerigo":   "Devotos de un dios que canalizan su poder divino para sanar aliados y destruir enemigos.",
   };
 
-final _infoTransfondo = {
+ // ignore: slash_for_doc_comments
+ /**
+  * final _infoTransfondo = {
 
   "Huérfano": {
     "competencias_hab": ["Engaño", "Sigilo"],
@@ -584,40 +593,43 @@ final _infoTransfondo = {
     "items": ["Pala", "Olla de hierro", "Ropa común", "Bolsa con 10 gp"],
   },
 
-};
+ };
+  */
 
 
-void pedirAyudaHistoria() async {
 
-  String? historiaModificada = await vm.getAyudaHistoriaIA(context, historiaController.text);
 
-  if (historiaModificada != null)
-  {
+  void pedirAyudaHistoria() async {
 
-    historiaController.text = historiaModificada;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Groq logro acudir a tu rescate",),),);
+
+
+    String? historiaModificada = await vm.getAyudaHistoriaIA(context, historiaController.text);
+
+   if (historiaModificada != null)
+   {
+
+     historiaController.text = historiaModificada;
+     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Groq logro acudir a tu rescate",),),);
                                  
-  }else
-  { 
-    Random random = Random();
+   }else
+   { 
+     Random random = Random();
 
-    int numero = random.nextInt(2);
-    if(numero == 1)
-    {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Parece que Groq ha caido en comnbate....",),),); 
-    }else
-    {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Pero nadie vino.....",),),); 
-    }
-                            
-
-
-  }
+     int numero = random.nextInt(2);
+     if(numero == 1)
+     {
+       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Parece que Groq ha caido en comnbate....",),),); 
+     }else
+     {
+       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Pero nadie vino.....",),),); 
+     }                            
 
 
+   }
+ }
 
+ 
 
-}
 
 
 

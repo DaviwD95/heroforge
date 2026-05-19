@@ -1,7 +1,10 @@
 
 import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
 
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:heroforge/Config/app_config.dart';
 import 'package:heroforge/Screens/Personajes/personaje_add_1.dart';
@@ -267,9 +270,60 @@ class PersonajeViewModel extends ChangeNotifier {
      {
       return null;
 
-     }
+     }    
+    
+  }
+
+
+
+  
+  Future<bool?> cambiarFotoPersonaje(File? imagenFile, Uint8List? imagenBytes, BuildContext context, Personaje personaje) async {
+
+
+    var request = http.MultipartRequest('POST',Uri.parse("$baseUrl/Personaje/ChangePhoto"),);
     
     
+
+    final token = Provider.of<AuthProvider>(context, listen: false).token;
+
+    request.headers['Authorization'] = 'Bearer $token';
+    request.fields['id'] = personaje.id.toString();    
+    
+    if (kIsWeb) {
+
+      request.files.add(
+      http.MultipartFile.fromBytes(
+        'file', imagenBytes!, filename: 'foto.jpg', ),);
+        
+      } else {
+        request.files.add(
+          await http.MultipartFile.fromPath('file',
+          imagenFile!.path,),
+          );
+        }
+
+
+    //Como es diferentes por los archivos se pone asi 
+
+    final streamedResponse = await request.send();
+
+    final response = await http.Response.fromStream(streamedResponse);
+
+    final data = jsonDecode(response.body);
+
+    if(response.statusCode == 200)
+    {
+
+      String fotoUrl = data["foto_url"];
+      
+      personaje.imagenUrl = fotoUrl;
+
+      return true;
+
+    }{
+
+      return false;
+    }
   }
 
 }

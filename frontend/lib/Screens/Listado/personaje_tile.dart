@@ -41,7 +41,7 @@ class _PersonajetileState extends State<Personajetile> {
 
           onTap: () {
 
-             Navigator.of(context).push(MaterialPageRoute(builder: (context) => DetallesPersoonaje(personaje: widget.personaje),),);
+             Navigator.of(context).push(MaterialPageRoute(builder: (context) => DetallesPersoonaje(personaje: widget.personaje, modificable: widget.modificable),),);
     
             
 

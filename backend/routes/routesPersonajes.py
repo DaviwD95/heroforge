@@ -8,6 +8,8 @@ import requests
 from services.security import get_payload
 from dotenv import load_dotenv
 import os
+from fastapi import UploadFile, File, Form
+from database.base import BASE_URL as baseUrl
 
 load_dotenv()
 
@@ -300,7 +302,46 @@ def addPersonajesPublicados(data : dict, db : Session = Depends(get_db_personaje
     return {"ok": True}
 
 
+@router.post("/Personaje/ChangePhoto")
+async  def changePhoto(id: int = Form(...), file: UploadFile = File(...), db : Session = Depends(get_db_personajes),  payload = Depends(get_payload)):
+
     
+    gmail = payload.get("sub")
+
+    user = db.query(User.User).filter(User.User.email == gmail).first()
+
+    if not user: 
+        raise HTTPException(status_code=404, detail="Error, usuario no encontrado")   
+    
+
+    
+    personaje = db.query(Personaje).filter(Personaje.id == id, Personaje.id_usuario == user.id).first()
+
+    if not personaje: 
+        raise HTTPException(status_code=404, detail="Error, personaje no encontrado")
+    
+    # Esto crea la carpeta si no existe 
+    os.makedirs("PhotoUploadsPersonajes", exist_ok=True)
+
+    # Guarda la imagen conruta correcta (si)
+    file_location = f"PhotoUploadsPersonajes/{personaje.id}.jpg"
+
+
+    #wb es para abrir el archvo en modo escritura, luego
+    # lee los bytes de la imagen que llegó del frontend y los escribe en disco.
+
+    with open(file_location, "wb") as f:
+        f.write(await file.read())
+
+    #  guardar la url entera en la base de datos okay 
+    personaje.imagen_url = f"{baseUrl}/{file_location}"  # type: ignore
+
+    db.commit()
+
+    return {
+
+        "foto_url": personaje.imagen_url
+    }
 
     
 

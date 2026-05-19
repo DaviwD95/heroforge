@@ -1,18 +1,47 @@
+import 'dart:io';
+
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:heroforge/Components/formulario_helpers.dart';
 import 'package:heroforge/Config/app_config.dart';
+import 'package:heroforge/ViewModels/PersonajeViewModel.dart';
 import 'package:heroforge/models/personaje.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 
-class DetallesPersoonaje extends StatelessWidget {
+class DetallesPersoonaje extends StatefulWidget {
   
   final Personaje personaje;
-  const DetallesPersoonaje({super.key, required this.personaje});
+  final bool modificable;
+  const DetallesPersoonaje({super.key, required this.personaje, required this.modificable});
 
-  
+  @override
+  State<DetallesPersoonaje> createState() => _DetallesPersoonajeState();
+}
+
+class _DetallesPersoonajeState extends State<DetallesPersoonaje> {
+
+  File? _imagenFile;
+  Uint8List? _imagenBytes;
+
+  late PersonajeViewModel vm;
+
+   @override
+  void initState() {
+    super.initState();  
+    
+    vm = Provider.of<PersonajeViewModel>(context, listen: false);
+    
+    }
+
+
 
   @override
   Widget build(BuildContext context) {
+
+    
 
     Color colorBasico = Colors.grey.shade100;
 
@@ -20,8 +49,8 @@ class DetallesPersoonaje extends StatelessWidget {
       backgroundColor: AppConfig.colorScaffold,
 
       appBar: AppBar(
-        title: Text("Detalles: ${personaje.nombre}"),
-        backgroundColor: colorSegunClase(personaje),
+        title: Text("Detalles: ${widget.personaje.nombre}"),
+        backgroundColor: colorSegunClase(widget.personaje),
       ),
 
       body: Padding(
@@ -38,15 +67,56 @@ class DetallesPersoonaje extends StatelessWidget {
         
               children: [
         
-                SizedBox(width: 20),
-        
-                Expanded(child: campo("Nombre Personaje", TextEditingController(text: personaje.nombre), colorBasico, readOnly: true)),
-        
-                SizedBox(width: 20),
-        
-                Expanded(child: campo("Nombre del jugador", TextEditingController(text: personaje.nombreJugador), colorBasico, readOnly: true)),
-        
-                SizedBox(width: 20),
+                Expanded(
+                  child: Column(
+                    children: [
+                  
+                      
+                          
+                      campo("Nombre Personaje", TextEditingController(text: widget.personaje.nombre), colorBasico, readOnly: true),
+                          
+                      SizedBox(height: 20),
+                          
+                      campo("Nombre del jugador", TextEditingController(text: widget.personaje.nombreJugador), colorBasico, readOnly: true),
+                          
+                      
+                    ],
+                  ),
+                ),
+
+                 SizedBox(width: 30),
+                          
+
+
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.2, // 20% del ancho de pantal
+                  height: 300,
+                  child: InkWell(
+                    child: Container(                            
+                  
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: Colors.blue, width: 2),
+                      ),
+                  
+                      child: ClipRRect(
+                        //ClipOval para ciruclos, clipReact para rectangulos
+                        borderRadius: BorderRadius.circular(12),
+                        child: _buildImagePersonaje(widget.personaje),
+                      ),
+                    ),
+                  
+                    onTap: () {
+                      if(widget.modificable== true)
+                      {
+                        _seleccionarImagen(widget.personaje);
+                      }                    
+                      
+                    },
+                  ),
+                ),
+
               ],
             ),
 
@@ -61,11 +131,11 @@ class DetallesPersoonaje extends StatelessWidget {
                   child: Column(
                     children: [
                   
-                      campo("Clase", TextEditingController(text: personaje.claseBase), colorBasico, readOnly: true),
+                      campo("Clase", TextEditingController(text: widget.personaje.claseBase), colorBasico, readOnly: true),
                   
                       SizedBox(height: 10),
                   
-                      Image.asset(imagenSegunClase(personaje.claseBase), width: 80, height: 85),
+                      Image.asset(imagenSegunClase(widget.personaje.claseBase), width: 80, height: 85),
                     ],
                   ),
                 ),
@@ -77,22 +147,22 @@ class DetallesPersoonaje extends StatelessWidget {
                     
                     children: [
                   
-                      campo("Raza", TextEditingController(text: personaje.raza), colorBasico, readOnly: true),
+                      campo("Raza", TextEditingController(text: widget.personaje.raza), colorBasico, readOnly: true),
                   
                       SizedBox(height: 10),
                   
-                      Image.asset(imagenSegunRaza(personaje.raza), width: 80, height: 85),
+                      Image.asset(imagenSegunRaza(widget.personaje.raza), width: 80, height: 85),
                     ],
                   ),
                 ),
 
                 SizedBox(width: 16),
                 
-                Flexible(child: campoIcono(Icons.favorite, Colors.red, TextEditingController(text: personaje.puntosGolpeMax.toString()), size: 80, readOnly: true)),
+                Flexible(child: campoIcono(Icons.favorite, Colors.red, TextEditingController(text: widget.personaje.puntosGolpeMax.toString()), size: 80, readOnly: true)),
 
                 SizedBox(width: 16),
 
-                Flexible(child: campoIcono(Icons.shield_sharp, Colors.grey, TextEditingController(text: personaje.claseArmadura.toString(),), readOnly: true, size: 80)),  
+                Flexible(child: campoIcono(Icons.shield_sharp, Colors.grey, TextEditingController(text: widget.personaje.claseArmadura.toString(),), readOnly: true, size: 80)),  
                
               ],
             ),
@@ -106,11 +176,11 @@ class DetallesPersoonaje extends StatelessWidget {
         
                 SizedBox(width: 20),
         
-                Expanded(child: campo("Nivel", TextEditingController(text: personaje.nivel == null ?  "": personaje.nivel.toString() ), colorBasico, readOnly: true)),
+                Expanded(child: campo("Nivel", TextEditingController(text: widget.personaje.nivel == null ?  "": widget.personaje.nivel.toString() ), colorBasico, readOnly: true)),
         
                 SizedBox(width: 20),
         
-                Expanded(child: campo("Experiencia", TextEditingController(text: personaje.experiencia == null ?  "" : personaje.experiencia.toString()), colorBasico, readOnly: true)),
+                Expanded(child: campo("Experiencia", TextEditingController(text: widget.personaje.experiencia == null ?  "" : widget.personaje.experiencia.toString()), colorBasico, readOnly: true)),
         
                 SizedBox(width: 20),
               ],
@@ -128,15 +198,15 @@ class DetallesPersoonaje extends StatelessWidget {
                 
                   children: [
                 
-                    Expanded(child: campo("Edad", TextEditingController(text: personaje.edad == null ? "" :  personaje.edad.toString()), colorBasico, readOnly: true)),
+                    Expanded(child: campo("Edad", TextEditingController(text: widget.personaje.edad == null ? "" :  widget.personaje.edad.toString()), colorBasico, readOnly: true)),
                 
                     SizedBox(width: 10),
                 
-                    Expanded(child: campo("Altura", TextEditingController(text: personaje.altura  == null ? "" : personaje.altura.toString()), colorBasico, readOnly: true)),
+                    Expanded(child: campo("Altura", TextEditingController(text: widget.personaje.altura  == null ? "" : widget.personaje.altura.toString()), colorBasico, readOnly: true)),
                 
                     SizedBox(width: 10),
                 
-                    Expanded(child: campo("Pelo", TextEditingController(text: personaje.pelo ?? ""), colorBasico, readOnly: true)),
+                    Expanded(child: campo("Pelo", TextEditingController(text: widget.personaje.pelo ?? ""), colorBasico, readOnly: true)),
                 
                     
                     //String? imagenUrl;
@@ -149,15 +219,15 @@ class DetallesPersoonaje extends StatelessWidget {
                   
                   children: [
                     
-                    Expanded(child: campo("Peso", TextEditingController(text: personaje.peso == null ? "" : personaje.peso.toString()), colorBasico, readOnly: true)),
+                    Expanded(child: campo("Peso", TextEditingController(text: widget.personaje.peso == null ? "" : widget.personaje.peso.toString()), colorBasico, readOnly: true)),
         
                     SizedBox(width: 10),
         
-                    Expanded(child: campo("Ojos", TextEditingController(text: personaje.ojos ?? ""), colorBasico, readOnly: true)),
+                    Expanded(child: campo("Ojos", TextEditingController(text: widget.personaje.ojos ?? ""), colorBasico, readOnly: true)),
         
                     SizedBox(width: 10),
         
-                    Expanded(child: campo("Piel", TextEditingController(text: personaje.piel ?? ""), colorBasico, readOnly: true)),
+                    Expanded(child: campo("Piel", TextEditingController(text: widget.personaje.piel ?? ""), colorBasico, readOnly: true)),
         
                   ]
                 ),
@@ -178,9 +248,9 @@ class DetallesPersoonaje extends StatelessWidget {
                 Row(
                   children: [
 
-                    Expanded(child: campo("Alineamiento", TextEditingController(text: personaje.alineamiento), colorBasico, readOnly: true )),
+                    Expanded(child: campo("Alineamiento", TextEditingController(text: widget.personaje.alineamiento), colorBasico, readOnly: true )),
 
-                    Expanded(child: campo("Transfondo", TextEditingController(text: personaje.trasfondo), colorBasico, readOnly: true )),
+                    Expanded(child: campo("Transfondo", TextEditingController(text: widget.personaje.trasfondo), colorBasico, readOnly: true )),
                     
                   ],
                 ),
@@ -200,7 +270,7 @@ class DetallesPersoonaje extends StatelessWidget {
                         style: TextStyle(fontWeight: FontWeight.bold),
                         minLines: null,                      
 
-                        controller: TextEditingController(text: personaje.rasgos ?? ""),       
+                        controller: TextEditingController(text: widget.personaje.rasgos ?? ""),       
                         textAlignVertical: TextAlignVertical.top,             
                       
                         decoration: InputDecoration(
@@ -224,7 +294,7 @@ class DetallesPersoonaje extends StatelessWidget {
                         minLines: null,     
                         style: const TextStyle(fontWeight: FontWeight.bold),      
 
-                        controller: TextEditingController(text: personaje.ideales ?? ""),       
+                        controller: TextEditingController(text: widget.personaje.ideales ?? ""),       
                         textAlignVertical: TextAlignVertical.top,             
                       
                         decoration: InputDecoration(
@@ -247,7 +317,7 @@ class DetallesPersoonaje extends StatelessWidget {
                         minLines: null,        
                         style:  TextStyle(fontWeight: FontWeight.bold),  
 
-                        controller: TextEditingController(text: personaje.vinculos ?? ""),       
+                        controller: TextEditingController(text: widget.personaje.vinculos ?? ""),       
                         textAlignVertical: TextAlignVertical.top,             
                       
                         decoration: InputDecoration(
@@ -270,7 +340,7 @@ class DetallesPersoonaje extends StatelessWidget {
                         maxLines: null,
                         minLines: null,   
 
-                        controller: TextEditingController(text: personaje.defectos ?? ""),       
+                        controller: TextEditingController(text: widget.personaje.defectos ?? ""),       
                         textAlignVertical: TextAlignVertical.top,             
                       
                         decoration: InputDecoration(
@@ -297,7 +367,7 @@ class DetallesPersoonaje extends StatelessWidget {
                  child: TextFormField(expands: true, maxLines: null, minLines: null, 
 
                   style: TextStyle(fontWeight: FontWeight.bold),                     
-                  controller: TextEditingController(text: personaje.historia),       
+                  controller: TextEditingController(text: widget.personaje.historia),       
                   textAlignVertical: TextAlignVertical.top,             
                  
                   decoration: InputDecoration(
@@ -331,7 +401,7 @@ class DetallesPersoonaje extends StatelessWidget {
 
             SizedBox(height: 20),
 
-            Text("Tu bono de competencia actual: +${personaje.bonusCompetencia}", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.deepPurple),),      
+            Text("Tu bono de competencia actual: +${widget.personaje.bonusCompetencia}", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.deepPurple),),      
 
             SizedBox(height: 20,),
             
@@ -344,7 +414,7 @@ class DetallesPersoonaje extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
 
-                      campo("Iniciativa", TextEditingController(text: "+${personaje.iniciativa.toString()}"), colorBasico, readOnly: true),
+                      campo("Iniciativa", TextEditingController(text: "+${widget.personaje.iniciativa.toString()}"), colorBasico, readOnly: true),
 
                       SizedBox(height: 10),
                   
@@ -361,7 +431,7 @@ class DetallesPersoonaje extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
 
-                      campo("Velocidad", TextEditingController(text: personaje.velocidad.toString()), colorBasico, readOnly: true),
+                      campo("Velocidad", TextEditingController(text: widget.personaje.velocidad.toString()), colorBasico, readOnly: true),
 
                       SizedBox(height: 10),
                   
@@ -382,9 +452,9 @@ class DetallesPersoonaje extends StatelessWidget {
                 Flexible(
                   child: Column(
                     children: [
-                      campoHabilidad("FUE", personaje),
-                      campoHabilidad("DES", personaje),
-                      campoHabilidad("CON", personaje),
+                      campoHabilidad("FUE", widget.personaje),
+                      campoHabilidad("DES", widget.personaje),
+                      campoHabilidad("CON", widget.personaje),
                     ],
                   ),
                 ),
@@ -394,9 +464,9 @@ class DetallesPersoonaje extends StatelessWidget {
                 Flexible(
                   child: Column(
                     children: [
-                      campoHabilidad("INT", personaje),
-                      campoHabilidad("SAB", personaje),
-                      campoHabilidad("CAR", personaje),
+                      campoHabilidad("INT", widget.personaje),
+                      campoHabilidad("SAB", widget.personaje),
+                      campoHabilidad("CAR", widget.personaje),
                     ],
               ),
             ),
@@ -420,8 +490,8 @@ class DetallesPersoonaje extends StatelessWidget {
             Row(
               children: [
 
-                Expanded(child: campoStatSimple("Fuerza",       personaje.fuerza)),
-                Expanded(child: campoStatSimple("Destreza",     personaje.destreza)),
+                Expanded(child: campoStatSimple("Fuerza",       widget.personaje.fuerza)),
+                Expanded(child: campoStatSimple("Destreza",     widget.personaje.destreza)),
                 
               ],
             ),
@@ -429,8 +499,8 @@ class DetallesPersoonaje extends StatelessWidget {
             Row(
               children: [
 
-                Expanded(child: campoStatSimple("Inteligencia", personaje.inteligencia)),
-                Expanded(child: campoStatSimple("Sabiduría",    personaje.sabiduria)),
+                Expanded(child: campoStatSimple("Inteligencia", widget.personaje.inteligencia)),
+                Expanded(child: campoStatSimple("Sabiduría",    widget.personaje.sabiduria)),
                 
 
               ],
@@ -438,8 +508,8 @@ class DetallesPersoonaje extends StatelessWidget {
 
             Row(
               children: [
-                Expanded(child: campoStatSimple("Constitución", personaje.constitucion)),
-                Expanded(child: campoStatSimple("Carisma",      personaje.carisma)),
+                Expanded(child: campoStatSimple("Constitución", widget.personaje.constitucion)),
+                Expanded(child: campoStatSimple("Carisma",      widget.personaje.carisma)),
 
               ],
             ),
@@ -462,17 +532,17 @@ class DetallesPersoonaje extends StatelessWidget {
                       child: Column(
                         children: 
                         [
-                          campoHabilidad('acrobacias', personaje),
-                          campoHabilidad('atletismo', personaje),
-                          campoHabilidad('C.arcano',  personaje),
+                          campoHabilidad('acrobacias', widget.personaje),
+                          campoHabilidad('atletismo', widget.personaje),
+                          campoHabilidad('C.arcano',  widget.personaje),
                       
-                          campoHabilidad('engaño', personaje),
-                          campoHabilidad('historia', personaje),
-                          campoHabilidad('interpretacion', personaje),
+                          campoHabilidad('engaño', widget.personaje),
+                          campoHabilidad('historia', widget.personaje),
+                          campoHabilidad('interpretacion', widget.personaje),
                       
-                          campoHabilidad('intimidacion', personaje),
-                          campoHabilidad('investigacion', personaje),
-                          campoHabilidad('juegoDeManos',  personaje),
+                          campoHabilidad('intimidacion', widget.personaje),
+                          campoHabilidad('investigacion', widget.personaje),
+                          campoHabilidad('juegoDeManos',  widget.personaje),
                       
                         ],
                       
@@ -484,17 +554,17 @@ class DetallesPersoonaje extends StatelessWidget {
                         children: 
                         [
                       
-                          campoHabilidad('medicina', personaje),
-                          campoHabilidad('naturaleza',  personaje),
-                          campoHabilidad('percepcion', personaje),
+                          campoHabilidad('medicina', widget.personaje),
+                          campoHabilidad('naturaleza',  widget.personaje),
+                          campoHabilidad('percepcion', widget.personaje),
                       
-                          campoHabilidad('perspicacia', personaje),
-                          campoHabilidad('persuasion',  personaje),
-                          campoHabilidad('religion', personaje),
+                          campoHabilidad('perspicacia', widget.personaje),
+                          campoHabilidad('persuasion',  widget.personaje),
+                          campoHabilidad('religion', widget.personaje),
                       
-                          campoHabilidad('sigilo', personaje),
-                          campoHabilidad('supervivencia', personaje),
-                          campoHabilidad('tratoAnimales',  personaje),
+                          campoHabilidad('sigilo', widget.personaje),
+                          campoHabilidad('supervivencia', widget.personaje),
+                          campoHabilidad('tratoAnimales',  widget.personaje),
                       
                         ],
                       
@@ -511,5 +581,81 @@ class DetallesPersoonaje extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget _buildImagePersonaje(Personaje personaje) {
+    
+    if (_imagenBytes != null) {
+
+      return Image.memory(_imagenBytes!, fit: BoxFit.cover);
+
+    } else if (_imagenFile != null) {
+
+      return Image.file(_imagenFile!, fit: BoxFit.cover);
+
+    } else if (personaje.imagenUrl != null) { 
+
+      return Image.network(personaje.imagenUrl!, fit: BoxFit.cover);
+
+     } else {
+      return Icon(Icons.person, size: 50, color: Colors.grey);
+    }
+  }
+
+  Future<void> _seleccionarImagen(Personaje personaje) async 
+  {
+
+   final picker = ImagePicker();
+
+   //Seleccionar la imagen de la galeria
+   final XFile? image = await picker.pickImage(
+     source: ImageSource.gallery,
+     imageQuality: 70,
+     maxWidth: 300,
+     maxHeight: 300,
+   );
+
+   //Si no se selecciona nada pues no devolvemos nada
+   if (image == null) return;
+  
+   if (kIsWeb) {
+     
+     final bytes = await image.readAsBytes();
+     
+     setState(() {
+      _imagenBytes = bytes;
+      _imagenFile = null;
+     });
+
+     bool? cambio = await vm.cambiarFotoPersonaje(null, _imagenBytes, context, personaje);
+
+     if(cambio == true)
+     {
+       ScaffoldMessenger.of(context).showSnackBar( const SnackBar(content: Text("Se ha cambiado la foto de perfil con exito!")),);
+     }else
+     {
+       ScaffoldMessenger.of(context).showSnackBar( const SnackBar(content: Text("Error, algo salio mal al cambiar la foto de perfil")),);
+     } 
+
+   }else 
+   {
+
+     setState(() {
+
+       _imagenFile = File(image.path);
+      _imagenBytes = null;
+     });
+
+     bool? cambio = await vm.cambiarFotoPersonaje(_imagenFile, null, context, personaje);
+
+     if(cambio == true)
+     {
+        ScaffoldMessenger.of(context).showSnackBar( const SnackBar(content: Text("Se ha cambiado la foto de perfil con exito!")),);
+     }else
+     {
+        ScaffoldMessenger.of(context).showSnackBar( const SnackBar(content: Text("Error, algo salio mal al cambiar la foto de perfil")),);
+     }
+    
+    }
   }
 }
